@@ -1,0 +1,27 @@
+name: 'LCOV GitHub Badges'
+description: 'Generates Badges from LCOV files.'
+inputs:
+  datFile:
+    description: 'LCOV generated data file'
+    required: true
+  gistID:
+    description: 'The hex ID of a project Gist.'
+    required: true
+  gistFileName:
+    description: 'The Gist file name'
+    required: true
+  red:
+    description: 'The whole percentage number to indicate inadequate coverage, default is 50'
+    required: false
+  yellow:
+    description: 'The whole percentage numb to indicate ok, but not acceptable coverage, default is 75'
+    required: false
+  icon:
+    description: 'An icon name from simpleicons.org website.'
+    required: false
+outputs:
+  code_coverage_percent:
+    description: 'The percentage of code covered'
+runs:
+  using: 'node16'
+  main: 'index.js'

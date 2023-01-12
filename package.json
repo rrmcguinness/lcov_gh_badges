@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "@actions/core": "^1.10.0"
+  },
+  "name": "lcov_gh_badges",
+  "description": "A GitHub Action for creating markdown embeddable badges directory from an LCOV .dat file.",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rrmcguinness/lcov_gh_badges.git"
+  },
+  "keywords": [
+    "lcov",
+    "badge",
+    "dat",
+    "dynamic",
+    "github"
+  ],
+  "author": "Ryan McGuinness",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rrmcguinness/lcov_gh_badges/issues"
+  },
+  "homepage": "https://github.com/rrmcguinness/lcov_gh_badges#readme"
+}
