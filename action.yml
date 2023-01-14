@@ -1,14 +1,11 @@
 name: 'LCOV GitHub Badges'
 description: 'Generates Badges from LCOV files.'
 inputs:
-  datFile:
+  dat_file:
     description: 'LCOV generated data file'
     required: true
-  gistID:
+  gist_id:
     description: 'The hex ID of a project Gist.'
-    required: true
-  gistFileName:
-    description: 'The Gist file name'
     required: true
   red:
     description: 'The whole percentage number to indicate inadequate coverage, default is 50'

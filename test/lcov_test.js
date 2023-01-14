@@ -18,7 +18,7 @@
 import {LcovStats} from '../model/stats.js'
 
 describe("Read a File", function() {
-    let p = new LcovStats("test/coverage.dat");
+    let p = new LcovStats("coverage.dat");
     try {
         p.read();
         process.stdout.write(`Stats: ${p.coverage()}`);

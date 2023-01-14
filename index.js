@@ -18,35 +18,19 @@ const github = require('@actions/github');
 const core = require('@actions/core');
 const lcov = require('model/lcov')
 const config = require('model/config')
+const {Config} = require('./model/config');
+const {LcovStats} = require('./model/stats');
 
-
-function getRed() {
-  let red = parseInt(core.getInput("red"))
-  if (red <= 0 || red > 100) {
-    red = 60;
-  }
-  return red;
-}
-
-function getYellow() {
-  let yellow = parseInt(core.getInput("yellow"))
-  if (yellow <= 0 || yellow > 100) {
-    yellow = 75
-  }
-  return yellow;
-}
 
 function init() {
-  let cfg = Object.create(config.Config)
-  // Initialize the input variables
-  cfg.setDatFile(core.getInput("datFile"));
-  cfg.setGistID(core.getInput("gistID"));
-  cfg.setGistFileName(core.getInput("gistFileName"));
-  cfg.setRed(getRed());
-  cfg.setYellow(getYellow());
-  cfg.setGreen(cfg.yellow + 1);
-  cfg.setIcon(core.getInput("icon"));
-  return cfg
+  return new Config(
+      core.getInput(config.Props.ACCESS_TOKEN),
+      core.getInput(config.Props.DAT_FILE),
+      core.getInput(config.Props.GIST_ID),
+      core.getInput(config.Props.RED),
+      core.getInput(config.Props.YELLOW),
+      core.getInput(config.Props.ICON)
+  )
 }
 
 async function run() {
@@ -57,20 +41,24 @@ async function run() {
   try {
     let config = init()
 
-    if (!config.Validate()) {
+    if (!config.validate()) {
       core.setFailed("Invalid Configuration")
     }
 
-    let stats = Object.create(lcov.Parser(lcovFile=config.dataFile))
+    let stats = new LcovStats(config.datFile)
 
-    core.exportVariable("COVERAGE_LINES_TESTED", stats.testedLines)
-    core.exportVariable("COVERAGE_LINES_TOTAL", stats.totalLines)
-    core.exportVariable("COVERAGE_LINES_INSTRUMENTED", stats.totalInstrumentedLines)
-    core.exportVariable("COVERAGE_FILES_TOTAL", stats.totalFiles)
-    core.exportVariable("COVERAGE_SCORE", stats.getCoverage())
+    core.exportVariable("COVERAGE_FUNCTIONS_FOUND", stats.functionsFound)
+    core.exportVariable("COVERAGE_FUNCTIONS_HIT", stats.functionsHit)
+    core.exportVariable("COVERAGE_LINES_FOUND", stats.linesFound)
+    core.exportVariable("COVERAGE_LINES_HIT", stats.linesHit)
+    core.exportVariable("COVERAGE_SCORE", stats.coverage())
+    let label = "Coverage"
+    let coverage = stats.coverage()
+    let color = (coverage <= config.red) ? "red" :
+        (coverage >= config.yellow && coverage < config.green) ? "yellow" : "green";
+    let message = stats.coverage()
+    core.exportVariable("COVERAGE_BADGE", `https://img.shields.io/badge/${label}-${message}-${color}`);
   } catch (error) {
     core.setFailed(error.message)
   }
-
-
 }

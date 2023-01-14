@@ -20,22 +20,24 @@ const DEFAULT_THRESHOLD_RED = 50;
 const DEFAULT_THRESHOLD_YELLOW = 75;
 const DEFAULT_THRESHOLD_MAX = 100;
 
-class Config {
-  datFile;
-  gistID;
-  gistFileName;
-  red = 50;
-  yellow = 75;
-  green = 76;
-  icon = "google";
+const Props = {
+  ACCESS_TOKEN: "access_token",
+  DAT_FILE: "dat_file",
+  GIST_ID: "gist_id",
+  RED: "red",
+  YELLOW: "yellow",
+  GREEN: "green",
+  ICON: "icon",
+}
 
-  constructor(datFile, gistID, gistFileName, red, yellow, green, icon) {
+class Config {
+  constructor(accessToken, datFile, gistID, red, yellow, icon) {
+    this.accessToken = accessToken;
     this.datFile = datFile;
     this.gistID = gistID;
-    this.gistFileName = gistFileName;
     this.setRed(red)
     this.setYellow(yellow)
-    this.setGreen(green)
+    this.setGreen()
     this.icon = icon
   }
   parseThreshold(input, defaultValue) {
@@ -49,26 +51,14 @@ class Config {
     }
     return input
   }
-  setDatFile(input) {
-    this.datFile = input;
-  }
-  setGistID(input) {
-    this.gistID = input;
-  }
-  setGistFileName(input) {
-    this.gistFileName = input;
-  }
   setRed(input) {
-    this.red = parseThreshold(input, DEFAULT_THRESHOLD_RED);
+    this.red = this.parseThreshold(input, DEFAULT_THRESHOLD_RED);
   }
   setYellow(input) {
     this.yellow = this.parseThreshold(input, DEFAULT_THRESHOLD_YELLOW);
   }
-  setGreen(input) {
-    this.green = this.parseThreshold(input, DEFAULT_THRESHOLD_YELLOW+1);
-  }
-  setIcon(input) {
-    this.icon = input;
+  setGreen() {
+    this.green = this.parseThreshold(this.yellow+1, DEFAULT_THRESHOLD_YELLOW+1);
   }
   validate() {
     let valid = true
@@ -80,13 +70,9 @@ class Config {
       valid = false
       core.error("GIST ID not set")
     }
-    if (!this.gistFileName) {
-      valid = false
-      core.error("GIST file name not set")
-    }
     return valid
   }
 }
 
-export {Config}
+export {Props, Config}
 
