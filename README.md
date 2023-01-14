@@ -37,10 +37,11 @@ Default is 75
 
 ## Variables <a name="varaiables"></a>
 
-* LCOV_TOTAL_FILES - The total number of files instrumented.
-* LCOV_TOTAL_LINES - The total number of lines instrumented.
-* LCOV_TOTAL_LINES_TESTED - The total number of lines tested.
-* LCOV_COVERAGE - The percent of lines LCOV_TOTAL_LINES_TESTED/LCOV_TOTAL_LINES.
+* COVERAGE_LINES_TESTED
+* COVERAGE_LINES_TOTAL
+* COVERAGE_LINES_INSTRUMENTED
+* COVERAGE_FILES_TOTAL
+* COVERAGE_SCORE - Is equal to: COVERAGE_LINES_TESTED / COVERAGE_LINE_TOTAL
 
 
 

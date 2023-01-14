@@ -1,0 +1,9 @@
+{
+  "name": "model",
+  "type": "module",
+  "version": "1.0.0",
+  "dependencies": {
+    "@actions/core": "^1.10.0"
+  },
+  "author": "Ryan McGuinness"
+}

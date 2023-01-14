@@ -1,3 +1,19 @@
+/*
+ * Copyright 2023 Google, LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 const github = require('@actions/github');
 const core = require('@actions/core');
 const lcov = require('model/lcov')
@@ -23,13 +39,13 @@ function getYellow() {
 function init() {
   let cfg = Object.create(config.Config)
   // Initialize the input variables
-  cfg.datFile = core.getInput("datFile");
-  cfg.gistID = core.getInput("gistID");
-  cfg.gistFileName = core.getInput("gistFileName");
-  cfg.red = getRed();
-  cfg.yellow = getYellow();
-  cfg.green = cfg.yellow + 1;
-  cfg.icon = core.getInput("icon");
+  cfg.setDatFile(core.getInput("datFile"));
+  cfg.setGistID(core.getInput("gistID"));
+  cfg.setGistFileName(core.getInput("gistFileName"));
+  cfg.setRed(getRed());
+  cfg.setYellow(getYellow());
+  cfg.setGreen(cfg.yellow + 1);
+  cfg.setIcon(core.getInput("icon"));
   return cfg
 }
 

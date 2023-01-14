@@ -1,3 +1,7 @@
+.bazelrc.user
+dist
+bazel-out
+
 # IntelliJ Idea
 .idea/
 
