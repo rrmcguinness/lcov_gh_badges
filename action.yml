@@ -4,9 +4,9 @@ inputs:
   dat_file:
     description: 'LCOV generated data file'
     required: true
-  gist_id:
-    description: 'The hex ID of a project Gist.'
-    required: true
+  icon_dir:
+    description: 'The directory to place the svg files into. the default is assets/coverage'
+    required: false
   red:
     description: 'The whole percentage number to indicate inadequate coverage, default is 50'
     required: false
@@ -14,7 +14,7 @@ inputs:
     description: 'The whole percentage numb to indicate ok, but not acceptable coverage, default is 75'
     required: false
   icon:
-    description: 'An icon name from simpleicons.org website.'
+    description: 'An icon name from simpleicons.org website, the default is googlecloud.'
     required: false
 outputs:
   code_coverage_percent:

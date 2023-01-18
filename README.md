@@ -1,5 +1,7 @@
 # lcov_gh_badges
 
+<span id="lcov_coverage"></span>
+
 ## TL;DR
 A GitHub Action for creating markdown embeddable badges directory from an 
 LCOV .dat file.

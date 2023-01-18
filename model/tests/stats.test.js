@@ -15,10 +15,11 @@
  */
 
 
-import {LcovStats} from '../model/stats.js'
+import {LcovStats} from '../stats.js'
 
 describe("Read a File", function() {
-    let p = new LcovStats("coverage.dat");
+    // This requires npm test to be run from the root directory.
+    let p = new LcovStats("model/tests/coverage.dat");
     try {
         p.read();
         process.stdout.write(`Stats: ${p.coverage()}`);

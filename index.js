@@ -14,51 +14,16 @@
  * limitations under the License.
  */
 
-const github = require('@actions/github');
-const core = require('@actions/core');
-const lcov = require('model/lcov')
-const config = require('model/config')
-const {Config} = require('./model/config');
-const {LcovStats} = require('./model/stats');
-
-
-function init() {
-  return new Config(
-      core.getInput(config.Props.ACCESS_TOKEN),
-      core.getInput(config.Props.DAT_FILE),
-      core.getInput(config.Props.GIST_ID),
-      core.getInput(config.Props.RED),
-      core.getInput(config.Props.YELLOW),
-      core.getInput(config.Props.ICON)
-  )
-}
+const core = require('@actions/core')
+const runner = require('model/runner.js')
 
 async function run() {
-  // This is the primary method of the lcov_gh_badges program. Here, we will
-  // read the dat file, and compute the statistics. Once complete, the
-  // stats will be pushed into environment variables.
 
-  try {
-    let config = init()
-
-    if (!config.validate()) {
-      core.setFailed("Invalid Configuration")
-    }
-
-    let stats = new LcovStats(config.datFile)
-
-    core.exportVariable("COVERAGE_FUNCTIONS_FOUND", stats.functionsFound)
-    core.exportVariable("COVERAGE_FUNCTIONS_HIT", stats.functionsHit)
-    core.exportVariable("COVERAGE_LINES_FOUND", stats.linesFound)
-    core.exportVariable("COVERAGE_LINES_HIT", stats.linesHit)
-    core.exportVariable("COVERAGE_SCORE", stats.coverage())
-    let label = "Coverage"
-    let coverage = stats.coverage()
-    let color = (coverage <= config.red) ? "red" :
-        (coverage >= config.yellow && coverage < config.green) ? "yellow" : "green";
-    let message = stats.coverage()
-    core.exportVariable("COVERAGE_BADGE", `https://img.shields.io/badge/${label}-${message}-${color}`);
-  } catch (error) {
-    core.setFailed(error.message)
+  core.setCommandEcho(true)
+  let run = runner.evaluate();
+  if (run != 0) {
+    core.setOutput("COVERAGE_STATUS", false)
+  } else {
+    core.setOutput("COVERAGE_STATUS", true)
   }
 }
