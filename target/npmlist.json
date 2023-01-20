@@ -1,0 +1,1 @@
+{"version":"1.0.0","name":"lcov_gh_badges","dependencies":{"@actions/core":{"version":"1.10.0"},"@istanbuljs/nyc-config-typescript":{"version":"1.0.2"},"@testdeck/mocha":{"version":"0.3.3"},"chai":{"version":"4.3.7"},"domino":{"version":"2.1.6"},"http-server":{"version":"14.1.1"},"mocha":{"version":"10.2.0"},"nyc":{"version":"15.1.0"}}}
