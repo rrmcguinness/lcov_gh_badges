@@ -130,7 +130,7 @@ class Config {
     parts.push(fmt.sprintf(IconBuilder.STYLE, this.style));
     parts.push(fmt.sprintf(IconBuilder.MESSAGE, coverage))
 
-    return IconBuilder.PREFIX + parts.join('&');
+    return IconBuilder.PREFIX + parts.join('&') + `%`;
   }
 }
 
@@ -142,7 +142,7 @@ const IconBuilder = {
   LOGO_COLOR: 'logoColor=%s',
   COLOR: 'color=%s',
   STYLE: 'style=%s',
-  MESSAGE: 'message=%s%%'
+  MESSAGE: 'message=%s'
 }
 
 export {Config}

@@ -10,11 +10,9 @@ import * as fs from 'fs';
 
 import * as fmt from 'sprintf-js';
 
-function getBody(badgeURL : string)  {
+function generateBadge(badgeURL : string)  {
   let client: http.HttpClient = new http.HttpClient()
-  process.stdout.write("Fetching URL: " + badgeURL)
   client.get(badgeURL).then(r => {
-    process.stdout.write("" + r.message.statusCode + "\n\n")
     r.readBody().then(b => {
       fs.writeFile("coverage.svg", b, (err) => {
         if (err) {
@@ -50,8 +48,7 @@ function evaluate() : number {
     core.exportVariable("COVERAGE_SCORE", coverage);
     core.exportVariable("COVERAGE_BADGE", badgeURL);
 
-    let body = getBody(badgeURL)
-    process.stdout.write(body + "\n\n");
+    generateBadge(badgeURL)
 
   } catch (e) {
     if (e instanceof Error) {
