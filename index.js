@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-let core = require('@actions/core')
-let runner = require('./src/runner')
+const core = require('@actions/core');
+const runner = require('./lib/runner');
 
 async function run() {
   core.setCommandEcho(true)

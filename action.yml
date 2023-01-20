@@ -37,8 +37,18 @@ inputs:
   critical_color:
     description: 'A hex value for the critical color. Default: 9c2c9c (dark red)'
 outputs:
-  code_coverage_badge:
-    description: 'a file containing the SVG output from shields.io'
+  coverage_functions_found:
+    description: 'The number of functions found'
+  coverage_functions_hit:
+    description: 'The number of functions hit'
+  coverage_lines_found:
+    description: 'The number of lines found'
+  coverage_lines_hit:
+    description: 'The number of lines hit'
+  coverage_score:
+    description: 'The score in percentage of total lines covered'
+  coverage_badge_url:
+    description: 'The URL used to generate the badge'
 runs:
   using: 'node16'
   main: 'index.js'

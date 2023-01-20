@@ -13,7 +13,7 @@ function SetupActionEnvironmentFromArgv() {
     }
   })
   if (process.env['INPUT_FILE'] === undefined) {
-    process.env['INPUT_FILE'] = "test/coverage.dat"
+    process.env['INPUT_FILE'] = "__test__/coverage.dat"
   }
 }
 
