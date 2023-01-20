@@ -104,8 +104,8 @@ class Config {
   computeColor(coverage: number) : string {
     if (coverage <= this.criticalThreshold) {
       return this.criticalColor;
-    } else if (coverage > this.criticalThreshold &&
-        coverage <= this.warningThreshold) {
+    } else if (coverage <= this.warningThreshold &&
+        coverage > this.criticalThreshold) {
       return this.warningColor;
     }
     return this.successColor;
