@@ -23,12 +23,9 @@ function evaluate() : number {
     core.exportVariable("COVERAGE_LINES_HIT", stats.linesHit)
     core.exportVariable("COVERAGE_SCORE", stats.coverage())
 
-
     let coverage = stats.coverage()
-    let color = config.computeColor(coverage)
 
-    // https://img.shields.io/static/v1?label=Coverage&message=80%&style=flat&logo=googlecloud&logoColor=ffffff&labelColor=363D45&color=43AD43
-    core.exportVariable("COVERAGE_BADGE", `https://img.shields.io/static/v1?label=${config.label}&message=${coverage}%&color=${config.messageColor}&style=${config.style}&logo=${config.icon}&logoColor=${config.iconColor}`);
+    core.exportVariable("COVERAGE_BADGE", config.imageURL(coverage));
   } catch (e) {
     if (e instanceof Error) {
       core.setFailed(e.message)

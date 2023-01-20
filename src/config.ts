@@ -15,6 +15,8 @@
  */
 
 import * as core from '@actions/core';
+import * as fmt from 'sprintf-js';
+
 
 const JSTypes = {
   STRING: "string",
@@ -117,6 +119,30 @@ class Config {
     }
     return valid
   }
+
+  imageURL(coverage: number) : string {
+    let parts = new Array<String>();
+    parts.push(fmt.sprintf(IconBuilder.LABEL, this.label));
+    parts.push(fmt.sprintf(IconBuilder.LABEL_COLOR, this.labelColor));
+    parts.push(fmt.sprintf(IconBuilder.LOGO, this.icon));
+    parts.push(fmt.sprintf(IconBuilder.LOGO_COLOR, this.iconColor));
+    parts.push(fmt.sprintf(IconBuilder.COLOR, this.computeColor(coverage)));
+    parts.push(fmt.sprintf(IconBuilder.STYLE, this.style));
+    parts.push(fmt.sprintf(IconBuilder.MESSAGE, coverage))
+
+    return IconBuilder.PREFIX + parts.join('&');
+  }
+}
+
+const IconBuilder = {
+  PREFIX: 'https://img.shields.io/static/v1?',
+  LABEL: 'label=%s',
+  LABEL_COLOR: 'labelColor=%s',
+  LOGO: 'logo=%s',
+  LOGO_COLOR: 'logoColor=%s',
+  COLOR: 'color=%s',
+  STYLE: 'style=%s',
+  MESSAGE: 'message=%s%%'
 }
 
 export {Config}
