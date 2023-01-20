@@ -3,7 +3,6 @@
   "description": "A GitHub Action for creating markdown embeddable badges directory from an LCOV .dat file.",
   "version": "1.0.0",
   "author": "Ryan McGuinness",
-  "type": "module",
   "license": "AS2",
   "bugs": {
     "url": "https://github.com/rrmcguinness/lcov_gh_badges/issues"
