@@ -1,6 +1,5 @@
-import * as core from '@actions/core';
-import github from '@actions/github';
-import {evaluate} from '../runner.js';
+import {evaluate} from '../src/runner';
+import {describe} from 'mocha';
 
 function SetupActionEnvironmentFromArgv() {
   process.argv.forEach(function (val, index, array) {
@@ -13,6 +12,9 @@ function SetupActionEnvironmentFromArgv() {
       process.env[processKey] = val
     }
   })
+  if (process.env['INPUT_FILE'] === undefined) {
+    process.env['INPUT_FILE'] = "test/coverage.dat"
+  }
 }
 
 describe("Main Test", function() {

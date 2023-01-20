@@ -1,16 +1,16 @@
 {
-  "dependencies": {
-    "@actions/core": "^1.10.0",
-    "domino": "^2.1.6",
-    "http-server": "^14.1.1",
-    "mocha": "^10.2.0"
-  },
   "name": "lcov_gh_badges",
   "description": "A GitHub Action for creating markdown embeddable badges directory from an LCOV .dat file.",
   "version": "1.0.0",
-  "main": "index.js",
+  "author": "Ryan McGuinness",
+  "license": "AS2",
+  "bugs": {
+    "url": "https://github.com/rrmcguinness/lcov_gh_badges/issues"
+  },
+  "homepage": "https://github.com/rrmcguinness/lcov_gh_badges#readme",
+  "main": "index.ts",
   "scripts": {
-    "test": "mocha model/tests/*.test.js --reporter spec -- --access_token \"fake_access_token\" --dat_file \"model/tests/coverage.dat\" --gist_id \"12345678\""
+    "test": "ts-mocha -p test/tsconfig.json test/**/*.ts"
   },
   "repository": {
     "type": "git",
@@ -23,10 +23,20 @@
     "dynamic",
     "github"
   ],
-  "author": "Ryan McGuinness",
-  "license": "AS2",
-  "bugs": {
-    "url": "https://github.com/rrmcguinness/lcov_gh_badges/issues"
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
+    "@testdeck/mocha": "^0.3.3",
+    "@tsconfig/node16": "^1.0.3",
+    "@types/node": "^18.11.18",
+    "chai": "^4.3.7",
+    "domino": "^2.1.6",
+    "http-server": "^14.1.1",
+    "mocha": "^10.2.0",
+    "ts-mocha": "^10.0.0",
+    "typescript": "^4.9.4"
   },
-  "homepage": "https://github.com/rrmcguinness/lcov_gh_badges#readme"
+  "devDependencies": {
+    "@types/mocha": "^10.0.1"
+  }
 }

@@ -16,7 +16,7 @@
 
 // A data structure for LCOV Stats
 
-import fs from 'fs';
+import * as fs from 'fs';
 
 const LCOV = {
   SOURCE_FILE: 'SF', // SF:pkg/proto/annotation.go
@@ -34,23 +34,9 @@ const TOKEN = {
 }
 
 class LineNumberHitCount {
-  constructor() {
-    this._lineNumber = 0;
-    this._hitCount = 0;
-  }
-  set lineNumber(input) {
-    this._lineNumber = input
-  }
-  get lineNumber() {
-    return this._lineNumber;
-  }
-  get hitCount() {
-    return this._hitCount;
-  }
-  set hitCount(input) {
-    this._hitCount = input;
-  }
-  fromString(input) {
+  lineNumber: number = 0;
+  hitCount: number = 0;
+  constructor(input: string) {
     if (input.startsWith(LCOV.LINE_NUMBER_AND_HIT_COUNT)) {
       let startIndex = input.indexOf(TOKEN.COLON)+1;
       let values = input.substring(startIndex).split(TOKEN.COMMA)
@@ -63,41 +49,23 @@ class LineNumberHitCount {
 }
 
 class FileStats {
-  constructor(sourceFile) {
+  sourceFile: string;
+  functionsFound: number = 0;
+  functionsHit: number = 0;
+  linesFound: number = 0;
+  linesHit: number = 0;
+  lineNumberHitCounts: Array<LineNumberHitCount> = new Array<LineNumberHitCount>();
+
+  constructor(sourceFile: string) {
     sourceFile = sourceFile.substring(LCOV.SOURCE_FILE.length+1)
-    this._sourceFile = sourceFile;
-    this._functionsFound = 0;
-    this._functionsHit = 0;
-    this._linesFound = 0;
-    this._linesHit = 0;
-    this._lineNumberHitCounts = []
+    this.sourceFile = sourceFile;
   }
 
-  get sourceFile() {
-    return this._sourceFile;
+  insertLineNumberHitCount(line: string) {
+    this.lineNumberHitCounts.push(new LineNumberHitCount(line))
   }
 
-  get functionsFound() {
-    return this._functionsFound;
-  }
-
-  get functionsHit() {
-    return this._functionsHit;
-  }
-
-  get linesFound() {
-    return this._linesFound;
-  }
-
-  get linesHit() {
-    return this._linesHit;
-  }
-
-  insertLineNumberHitCount(line) {
-    this._lineNumberHitCounts.push(new LineNumberHitCount(line))
-  }
-
-  evaluate(line) {
+  evaluate(line: string) {
     if (line.startsWith(LCOV.END_OF_RECORD)) {
       return false;
     } else {
@@ -106,18 +74,18 @@ class FileStats {
       let values = line.substring(colonIndex+1).split(TOKEN.COMMA)
       switch (token) {
         case LCOV.FUNCTIONS_FOUND:
-          this._functionsFound = parseInt(values[0]);
+          this.functionsFound = parseInt(values[0]);
           break;
         case LCOV.FUNCTIONS_HIT:
-          this._functionsHit = parseInt(values[0]);
+          this.functionsHit = parseInt(values[0]);
           break;
         case LCOV.LINE_NUMBER_AND_HIT_COUNT:
           this.insertLineNumberHitCount(line);
         case LCOV.LINES_FOUND:
-          this._linesFound = parseInt(values[0]);
+          this.linesFound = parseInt(values[0]);
           break;
         case LCOV.LINES_HIT:
-          this._linesHit = parseInt(values[0])
+          this.linesHit = parseInt(values[0])
       }
     }
     return true;
@@ -125,64 +93,42 @@ class FileStats {
 }
 
 class LcovStats {
-  constructor(fileName) {
-    this._isRead = false;
-    this._totalLinesFound = 0;
-    this._totalLinesHit = 0;
-    this._totalFunctionsFound = 0;
-    this._totalFunctionsHit = 0;
-    this._fileStats = [];
-    this._fileName = fileName;
-  }
+  fileName: string;
+  processed: boolean = false;
+  linesFound: number = 0;
+  linesHit: number = 0;
+  functionsFound: number = 0;
+  functionsHit: number = 0;
+  fileStats: Array<FileStats> = new Array<FileStats>();
 
-  get fileName() {
-    return this._fileName;
-  }
-
-  get linesFound() {
-    return this._totalLinesFound;
-  }
-
-  get linesHit() {
-    return this._totalLinesHit;
-  }
-
-  get functionsFound() {
-    return this._totalFunctionsFound;
-  }
-
-  get functionsHit() {
-    return this._totalFunctionsHit;
-  }
-
-  get fileStats() {
-    return this._fileStats;
+  constructor(fileName : string) {
+    this.fileName = fileName;
   }
 
   read() {
-    if (!this._isRead) {
-      let content = fs.readFileSync(this._fileName, 'utf-8')
-      let fileStats = null;
+    if (!this.processed) {
+      let content = fs.readFileSync(this.fileName, 'utf-8')
+      let fileStats : FileStats;
       content.split(/\r?\n/).forEach(line => {
         if (line.startsWith(LCOV.SOURCE_FILE)) {
           fileStats = new FileStats(line)
         }
         if (!fileStats.evaluate(line)) {
-          this._fileStats.push(fileStats);
-          this._totalLinesFound += fileStats.linesFound;
-          this._totalLinesHit += fileStats.linesHit;
-          this._totalFunctionsFound += fileStats.functionsFound;
-          this._totalFunctionsHit += fileStats.functionsHit
+          this.fileStats.push(fileStats);
+          this.linesFound += fileStats.linesFound;
+          this.linesHit += fileStats.linesHit;
+          this.functionsFound += fileStats.functionsFound;
+          this.functionsHit += fileStats.functionsHit
         }
       });
-      this._isRead = true
+      this.processed = true
     } else {
-      process.stdout.write(`Attempted to read file ${this._fileName} again`)
+      process.stdout.write(`Attempted to read file ${this.fileName} again`)
     }
   }
 
   coverage() {
-    let out = Math.round((this._totalLinesHit / this._totalLinesFound)*100);
+    let out = Math.round((this.linesHit / this.linesFound)*100);
     if (isNaN(out)) {
       out = 0;
     }

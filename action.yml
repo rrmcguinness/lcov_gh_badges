@@ -1,24 +1,44 @@
 name: 'LCOV GitHub Badges'
 description: 'Generates Badges from LCOV files.'
 inputs:
-  dat_file:
-    description: 'LCOV generated data file'
+  file:
+    description: 'LCOV generated, combined, data file location from workspace root. Example: bazel-out/darwin-fastbuild/testlogs/pkg/<project_name>/<project_name>_test/coverage.dat '
     required: true
-  icon_dir:
-    description: 'The directory to place the svg files into. the default is assets/coverage'
+  access_token:
+    description: 'Access token used for writing files'
     required: false
-  red:
-    description: 'The whole percentage number to indicate inadequate coverage, default is 50'
+  style:
+    description: 'One of five styles: plastic, flat, flat-square, for-the-badge, or social. The default is flat.'
     required: false
-  yellow:
-    description: 'The whole percentage numb to indicate ok, but not acceptable coverage, default is 75'
+  icon_name:
+    description: 'The name of the icon for the badge, NONE if you do not want one. Default: Google Cloud'
     required: false
-  icon:
-    description: 'An icon name from simpleicons.org website, the default is googlecloud.'
+  label:
+    description: 'The label for the badge. Default: Coverage'
     required: false
+  critical:
+    description: 'An integer value, displaying the critical color if at or below the value. Default: 60'
+    required: false
+  warning:
+    description: 'An integer value, displaying the warning color if above critical and below or equal to this threshold. Default: 75'
+    required: false
+  label_color:
+    description: 'A hex value for the label color. Default: ffffff'
+    required: false
+  message_color:
+    description: 'A hex value for the message color. Default ffffff'
+    required: false
+  success_color:
+    description: 'A hex value for the success color. Default: 43ad43 (green)'
+    required: false
+  warning_color:
+    description: 'A hex value for the warning color. Default: d68f0c (dark yellow)'
+    required: false
+  critical_color:
+    description: 'A hex value for the critical color. Default: 9c2c9c (dark red)'
 outputs:
-  code_coverage_percent:
-    description: 'The percentage of code covered'
+  code_coverage_badge:
+    description: 'a file containing the SVG output from shields.io'
 runs:
   using: 'node16'
-  main: 'index.js'
+  main: 'index.ts'

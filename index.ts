@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-const core = require('@actions/core')
-const runner = require('model/runner.js')
+import * as core from '@actions/core';
+import * as runner from './src/runner';
 
 async function run() {
-
   core.setCommandEcho(true)
   let run = runner.evaluate();
   if (run != 0) {

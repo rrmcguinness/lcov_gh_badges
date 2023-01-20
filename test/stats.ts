@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-
-import {LcovStats} from '../stats.js'
+import {LcovStats} from '../src/stats'
+import {describe} from 'mocha';
 
 describe("Read a File", function() {
     // This requires npm test to be run from the root directory.
-    let p = new LcovStats("model/tests/coverage.dat");
+    let p = new LcovStats("test/coverage.dat");
     try {
         p.read();
         process.stdout.write(`Stats: ${p.coverage()}`);

@@ -1,7 +1,5 @@
 # lcov_gh_badges
 
-<span id="lcov_coverage"></span>
-
 ## TL;DR
 A GitHub Action for creating markdown embeddable badges directory from an 
 LCOV .dat file.
@@ -13,29 +11,33 @@ with a difference in that it evaluates the LCOV data format, and automatically
 places the values into [environment vairables](#variables). These variable are then used
 to create a Gist that can be embedded into an icon URL.
 
-
+### Minimal Configuration
 ```yaml
-
 ...
 steps:
   - uses: rrmcguinness/lcov_gh_badges@v1.0.0
-    datFile: ./target/coverage.dat
-    gistID: e2d1696c1ef0cbc67ef8bcbbfc46313a
-    gistFileName: proto-diagram-tool-coverage.json 
-    red: 50
-    yellow: 70
-    icon: 'Google Cloud'
+    file: ./target/coverage.dat
 ```
 
-* datFile - the location of the lcov data file.
-* gistID - the ID of the Gist to write JSON to.
-* gistFileName - the name of the gist file, used for creating the URL.
-* red - Is <= (less than or equal to) percent to turn the badge red. Default is
-60
-* yellow - Is <= (less than or equal to) percent to turn the badge yellow.
-Default is 75
-* green - is any number greater than the yellow threshold.
-* icon is the icon name from [Simple Icons](http://simpleicons.org/)
+### Complete Configuration
+```yaml
+...
+steps:
+- uses: rrmcguinness/lcov_gh_badges@v1.0.0
+  file: ./target/coverage.dat
+  accessToken: ${ACCESS_TOKEN}
+  style: flat
+  icon_name: googlecloud,
+  icon_color: 'ffffff',
+  label: 'Coverage'
+  label_color: 'ffffff'
+  critical: 60
+  criticalColor: '9c2c9c'
+  warning: 75
+  warningColor: 'd68f0c'
+  success_color: '43ad43'
+  message_color: 'ffffff'
+```
 
 ## Variables <a name="varaiables"></a>
 
