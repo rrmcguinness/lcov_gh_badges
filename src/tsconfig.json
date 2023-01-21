@@ -1,8 +1,6 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "lib": ["es2021"],
-    "target": "es2021",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,

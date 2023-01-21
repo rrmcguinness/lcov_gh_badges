@@ -1,18 +1,22 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "noImplicitAny": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "baseUrl": "./",
+    "lib": ["es2021"],
+    "target": "es2021",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "strict": true,
+    "declaration": true,
     "outDir": "./lib",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "moduleResolution": "node"
   },
   "include": [
-    "./src/**/*"
+    "./src"
   ],
   "exclude": [
-    "node_modules", "**/*.spec.ts"
+    "node_modules",
+    "**/__test__/*",
+    "**/__mocks__/*"
   ]
 }

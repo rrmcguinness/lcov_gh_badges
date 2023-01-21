@@ -103,6 +103,7 @@ class LcovStats {
 
   constructor(fileName : string) {
     this.fileName = fileName;
+    this.read();
   }
 
   read() {

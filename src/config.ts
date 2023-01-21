@@ -14,14 +14,8 @@
  * limitations under the License.
  */
 
-import * as core from '@actions/core';
-import * as fmt from 'sprintf-js';
-
-
-const JSTypes = {
-  STRING: "string",
-  NUMBER: "number"
-}
+const core = require('@actions/core')
+const fmt = require('sprintf-js')
 
 const Defaults = {
   STYLE: 'flat',

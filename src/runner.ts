@@ -1,19 +1,16 @@
+
 import {Config} from './config';
-
 import {LcovStats} from './stats';
-
 import * as core from '@actions/core';
-
 import * as http from '@actions/http-client';
-
 import * as fs from 'fs';
-
 import * as fmt from 'sprintf-js';
 
 function generateBadge(badgeURL : string)  {
+
   let client: http.HttpClient = new http.HttpClient()
-  client.get(badgeURL).then(r => {
-    r.readBody().then(b => {
+  client.get(badgeURL).then((r : http.HttpClientResponse) => {
+    r.readBody().then((b: string) => {
       fs.writeFile("coverage.svg", b, (err) => {
         if (err) {
           core.error(fmt.sprintf("Failed to write file: coverage.svg with error: %s\n", err));
@@ -43,14 +40,17 @@ function evaluate() : number {
       core.setFailed("Invalid Configuration");
     }
 
+    // Compute the statistics
     let stats = new LcovStats(config.file);
-    stats.read();
-
     let coverage = stats.coverage();
+
+    // Generate the badge URL
     let badgeURL = config.imageURL(coverage);
 
+    // Generate the Badge File
     generateBadge(badgeURL)
 
+    // Set Output
     core.setOutput(Outputs.COVERAGE_FUNCTIONS_FOUND, stats.functionsFound);
     core.setOutput(Outputs.COVERAGE_FUNCTIONS_HIT, stats.functionsHit);
     core.setOutput(Outputs.COVERAGE_LINES_FOUND, stats.linesFound);
