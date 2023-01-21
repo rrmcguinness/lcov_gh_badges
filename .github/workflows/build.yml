@@ -1,20 +1,17 @@
 name: Build
 
-runs-on: ubuntu-latest
-
 on:
   push:
     branches:
       - main
   pull_request:
 
-strategy:
-  matrix:
-    node-version: [16.x,18.x]
-
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x,18.x]
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
