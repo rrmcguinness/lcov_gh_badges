@@ -2,7 +2,7 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 88:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
@@ -21,68 +21,50 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Config = void 0;
-const core = __nccwpck_require__(2186);
-const fmt = __nccwpck_require__(3988);
-const Defaults = {
-    STYLE: 'flat',
-    ICON: 'googlecloud',
-    LABEL: "Coverage",
-    THRESHOLD_CRITICAL: 60,
-    THRESHOLD_WARNING: 75,
-    COLOR_ICON: 'ffffff',
-    COLOR_LABEL: '363d45',
-    COLOR_MESSAGE: 'ffffff',
-    COLOR_SUCCESS: '43ad43',
-    COLOR_WARNING: 'd68f0C',
-    COLOR_CRITICAL: '9c2c2c'
-};
-const Props = {
-    ACCESS_TOKEN: "access_token",
-    FILE: 'file',
-    STYLE: 'style',
-    ICON: 'icon_name',
-    LABEL: 'label',
-    THRESHOLD_CRITICAL: 'critical',
-    THRESHOLD_WARNING: 'warning',
-    COLOR_ICON: 'icon_color',
-    COLOR_LABEL: 'label_color',
-    COLOR_MESSAGE: 'message_color',
-    COLOR_SUCCESS: 'success_color',
-    COLOR_WARNING: 'warning_color',
-    COLOR_CRITICAL: 'critical_color'
-};
-function getInputString(name, fallback) {
-    let value = core.getInput(name);
-    if (value === null || value === undefined || value === '') {
-        value = fallback;
-    }
-    return value;
-}
-function getInputNumber(name, fallback) {
-    let value = core.getInput(name);
-    let out = parseInt(value);
-    if (out < 0 || out < 100) {
-        out = fallback;
-    }
-    return out;
-}
+const constants_1 = __nccwpck_require__(5105);
+const util = __importStar(__nccwpck_require__(918));
+const core = __importStar(__nccwpck_require__(2186));
+const fmt = __importStar(__nccwpck_require__(3988));
 class Config {
     constructor() {
-        this.accessToken = getInputString(Props.ACCESS_TOKEN, '');
-        this.file = getInputString(Props.FILE, '');
-        this.style = getInputString(Props.STYLE, Defaults.STYLE);
-        this.icon = getInputString(Props.ICON, Defaults.ICON);
-        this.label = getInputString(Props.LABEL, Defaults.LABEL);
-        this.labelColor = getInputString(Props.COLOR_LABEL, Defaults.COLOR_LABEL);
-        this.messageColor = getInputString(Props.COLOR_MESSAGE, Defaults.COLOR_MESSAGE);
-        this.iconColor = getInputString(Props.COLOR_ICON, Defaults.COLOR_ICON);
-        this.criticalThreshold = getInputNumber(Props.THRESHOLD_CRITICAL, Defaults.THRESHOLD_CRITICAL);
-        this.criticalColor = getInputString(Props.COLOR_CRITICAL, Defaults.COLOR_CRITICAL);
-        this.warningThreshold = getInputNumber(Props.THRESHOLD_CRITICAL, Defaults.THRESHOLD_WARNING);
-        this.warningColor = getInputString(Props.COLOR_WARNING, Defaults.COLOR_WARNING);
-        this.successColor = getInputString(Props.COLOR_SUCCESS, Defaults.COLOR_SUCCESS);
+        this.accessToken = util.evaluateString(constants_1.Props.ACCESS_TOKEN, '');
+        this.file = util.evaluateString(constants_1.Props.FILE, '');
+        this.style = util.evaluateString(constants_1.Props.STYLE, constants_1.Defaults.STYLE);
+        this.icon = util.evaluateString(constants_1.Props.ICON, constants_1.Defaults.ICON);
+        this.label = util.evaluateString(constants_1.Props.LABEL, constants_1.Defaults.LABEL);
+        this.labelColor = util.evaluateString(constants_1.Props.COLOR_LABEL, constants_1.Defaults.COLOR_LABEL);
+        this.messageColor = util.evaluateString(constants_1.Props.COLOR_MESSAGE, constants_1.Defaults.COLOR_MESSAGE);
+        this.iconColor = util.evaluateString(constants_1.Props.COLOR_ICON, constants_1.Defaults.COLOR_ICON);
+        this.criticalThreshold = util.evaluateNumber(constants_1.Props.THRESHOLD_CRITICAL, constants_1.Defaults.THRESHOLD_CRITICAL);
+        this.criticalColor = util.evaluateString(constants_1.Props.COLOR_CRITICAL, constants_1.Defaults.COLOR_CRITICAL);
+        this.warningThreshold = util.evaluateNumber(constants_1.Props.THRESHOLD_CRITICAL, constants_1.Defaults.THRESHOLD_WARNING);
+        this.warningColor = util.evaluateString(constants_1.Props.COLOR_WARNING, constants_1.Defaults.COLOR_WARNING);
+        this.successColor = util.evaluateString(constants_1.Props.COLOR_SUCCESS, constants_1.Defaults.COLOR_SUCCESS);
     }
     computeColor(coverage) {
         if (coverage <= this.criticalThreshold) {
@@ -104,18 +86,85 @@ class Config {
     }
     imageURL(coverage) {
         let parts = new Array();
-        parts.push(fmt.sprintf(IconBuilder.LABEL, this.label));
-        parts.push(fmt.sprintf(IconBuilder.LABEL_COLOR, this.labelColor));
-        parts.push(fmt.sprintf(IconBuilder.LOGO, this.icon));
-        parts.push(fmt.sprintf(IconBuilder.LOGO_COLOR, this.iconColor));
-        parts.push(fmt.sprintf(IconBuilder.COLOR, this.computeColor(coverage)));
-        parts.push(fmt.sprintf(IconBuilder.STYLE, this.style));
-        parts.push(fmt.sprintf(IconBuilder.MESSAGE, coverage));
-        return IconBuilder.PREFIX + parts.join('&') + `%`;
+        parts.push(fmt.sprintf(constants_1.Icons.LABEL, this.label));
+        parts.push(fmt.sprintf(constants_1.Icons.LABEL_COLOR, this.labelColor));
+        parts.push(fmt.sprintf(constants_1.Icons.LOGO, this.icon));
+        parts.push(fmt.sprintf(constants_1.Icons.LOGO_COLOR, this.iconColor));
+        parts.push(fmt.sprintf(constants_1.Icons.COLOR, this.computeColor(coverage)));
+        parts.push(fmt.sprintf(constants_1.Icons.STYLE, this.style));
+        parts.push(fmt.sprintf(constants_1.Icons.MESSAGE, coverage));
+        return constants_1.Icons.PREFIX + parts.join('&') + `%`;
     }
 }
 exports.Config = Config;
-const IconBuilder = {
+
+
+/***/ }),
+
+/***/ 5105:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+/*
+ * Copyright 2023 Google, LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.COVERAGE_SVG = exports.Outputs = exports.Icons = exports.Props = exports.Defaults = void 0;
+const COVERAGE_SVG = "coverage.svg";
+exports.COVERAGE_SVG = COVERAGE_SVG;
+const Outputs = {
+    COVERAGE_FUNCTIONS_FOUND: 'coverage_functions_found',
+    COVERAGE_FUNCTIONS_HIT: 'coverage_functions_hit',
+    COVERAGE_LINES_FOUND: 'coverage_lines_found',
+    COVERAGE_LINES_HIT: 'coverage_lines_hit',
+    COVERAGE_SCORE: 'coverage_score',
+    COVERAGE_BADGE_URL: 'coverage_badge_url',
+};
+exports.Outputs = Outputs;
+const Defaults = {
+    STYLE: 'flat',
+    ICON: 'googlecloud',
+    LABEL: "Coverage",
+    THRESHOLD_CRITICAL: 60,
+    THRESHOLD_WARNING: 75,
+    COLOR_ICON: 'ffffff',
+    COLOR_LABEL: '363d45',
+    COLOR_MESSAGE: 'ffffff',
+    COLOR_SUCCESS: '43ad43',
+    COLOR_WARNING: 'd68f0C',
+    COLOR_CRITICAL: '9c2c2c'
+};
+exports.Defaults = Defaults;
+const Props = {
+    ACCESS_TOKEN: "access_token",
+    FILE: 'file',
+    STYLE: 'style',
+    ICON: 'icon_name',
+    LABEL: 'label',
+    THRESHOLD_CRITICAL: 'critical',
+    THRESHOLD_WARNING: 'warning',
+    COLOR_ICON: 'icon_color',
+    COLOR_LABEL: 'label_color',
+    COLOR_MESSAGE: 'message_color',
+    COLOR_SUCCESS: 'success_color',
+    COLOR_WARNING: 'warning_color',
+    COLOR_CRITICAL: 'critical_color'
+};
+exports.Props = Props;
+const Icons = {
     PREFIX: 'https://img.shields.io/static/v1?',
     LABEL: 'label=%s',
     LABEL_COLOR: 'labelColor=%s',
@@ -125,6 +174,7 @@ const IconBuilder = {
     STYLE: 'style=%s',
     MESSAGE: 'message=%s'
 };
+exports.Icons = Icons;
 
 
 /***/ }),
@@ -173,86 +223,13 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
-const runner = __importStar(__nccwpck_require__(8209));
-async function run() {
-    core.setCommandEcho(true);
-    let run = runner.evaluate();
-    if (run != 0) {
-        core.error("Failed execution of the executor");
-        core.setOutput("COVERAGE_STATUS", false);
-    }
-    else {
-        core.notice("Coverage Complete");
-        core.setOutput("COVERAGE_STATUS", true);
-    }
-}
-
-
-/***/ }),
-
-/***/ 8209:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.evaluate = void 0;
 const config_1 = __nccwpck_require__(88);
 const stats_1 = __nccwpck_require__(4204);
-const core = __importStar(__nccwpck_require__(2186));
-const http = __importStar(__nccwpck_require__(6255));
-const fs = __importStar(__nccwpck_require__(7147));
-const fmt = __importStar(__nccwpck_require__(3988));
-const github = __importStar(__nccwpck_require__(5438));
-const COVERAGE_SVG = "coverage.svg";
-function generateBadge(badgeURL) {
-    let client = new http.HttpClient();
-    client.get(badgeURL).then((r) => {
-        r.readBody().then((b) => {
-            fs.writeFile(COVERAGE_SVG, b, (err) => {
-                if (err) {
-                    core.error(fmt.sprintf("Failed to write file: coverage.svg with error: %s\n", err));
-                }
-                else {
-                    core.notice(fmt.sprintf("Created file: $s", COVERAGE_SVG));
-                }
-            });
-        });
-    });
-}
-const Outputs = {
-    COVERAGE_FUNCTIONS_FOUND: 'coverage_functions_found',
-    COVERAGE_FUNCTIONS_HIT: 'coverage_functions_hit',
-    COVERAGE_LINES_FOUND: 'coverage_lines_found',
-    COVERAGE_LINES_HIT: 'coverage_lines_hit',
-    COVERAGE_SCORE: 'coverage_score',
-    COVERAGE_BADGE_URL: 'coverage_badge_url',
-};
-function evaluate() {
+const constants_1 = __nccwpck_require__(5105);
+const utils_1 = __nccwpck_require__(918);
+async function run() {
     try {
         let config = new config_1.Config();
         if (!config.validate()) {
@@ -265,46 +242,30 @@ function evaluate() {
         // Generate the badge URL
         let badgeURL = config.imageURL(coverage);
         // Generate the Badge File
-        generateBadge(badgeURL);
-        // Set Output
-        core.setOutput(Outputs.COVERAGE_FUNCTIONS_FOUND, stats.functionsFound);
-        core.setOutput(Outputs.COVERAGE_FUNCTIONS_HIT, stats.functionsHit);
-        core.setOutput(Outputs.COVERAGE_LINES_FOUND, stats.linesFound);
-        core.setOutput(Outputs.COVERAGE_LINES_HIT, stats.linesHit);
-        core.setOutput(Outputs.COVERAGE_SCORE, coverage);
-        core.setOutput(Outputs.COVERAGE_BADGE_URL, badgeURL);
+        (0, utils_1.generateBadge)(badgeURL);
         process.stdout.write("Generated Badge\n");
-        if (config.accessToken) {
-            process.stdout.write("Creating file via Octokit\n");
-            const context = github.context;
-            const octokit = github.getOctokit(config.accessToken);
-            const contents = fs.readFileSync(COVERAGE_SVG, { encoding: 'base64' });
-            octokit.rest.repos.createOrUpdateFileContents({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                path: 'coverage.svg',
-                message: 'Update coverage file',
-                content: contents,
-                author: {
-                    name: 'GCOV Github Badge',
-                    email: ''
-                }
-            }).then(o => {
-                process.stdout.write("Finished writing file: " + o.data + "\n");
-            }).catch(e => {
-                process.stderr.write("Failed to create or update File: " + e.message + "\n");
-            });
-        }
+        // Set Output
+        core.setOutput(constants_1.Outputs.COVERAGE_FUNCTIONS_FOUND, stats.functionsFound);
+        core.setOutput(constants_1.Outputs.COVERAGE_FUNCTIONS_HIT, stats.functionsHit);
+        core.setOutput(constants_1.Outputs.COVERAGE_LINES_FOUND, stats.linesFound);
+        core.setOutput(constants_1.Outputs.COVERAGE_LINES_HIT, stats.linesHit);
+        core.setOutput(constants_1.Outputs.COVERAGE_SCORE, coverage);
+        core.setOutput(constants_1.Outputs.COVERAGE_BADGE_URL, badgeURL);
+        (0, utils_1.writeToGitHub)(config);
     }
     catch (e) {
         if (e instanceof Error) {
-            core.setFailed(e.message);
+            core.error("Failed execution of the executor");
+            core.setOutput("COVERAGE_STATUS", false);
         }
-        return core.ExitCode.Failure;
+        else {
+            core.notice("Coverage Complete");
+            core.setOutput("COVERAGE_STATUS", true);
+        }
     }
-    return core.ExitCode.Success;
 }
-exports.evaluate = evaluate;
+exports.run = run;
+run();
 
 
 /***/ }),
@@ -465,6 +426,121 @@ class LcovStats {
     }
 }
 exports.LcovStats = LcovStats;
+
+
+/***/ }),
+
+/***/ 918:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+/*
+ * Copyright 2023 Google, LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.writeToGitHub = exports.generateBadge = exports.evaluateString = exports.evaluateNumber = void 0;
+const core = __importStar(__nccwpck_require__(2186));
+const http = __importStar(__nccwpck_require__(6255));
+const fs_1 = __importDefault(__nccwpck_require__(7147));
+const constants_1 = __nccwpck_require__(5105);
+const fmt = __importStar(__nccwpck_require__(3988));
+const github = __importStar(__nccwpck_require__(5438));
+function evaluateString(name, fallback) {
+    let value = core.getInput(name);
+    if (value === null || value === undefined || value === '') {
+        value = fallback;
+    }
+    return value;
+}
+exports.evaluateString = evaluateString;
+function evaluateNumber(name, fallback) {
+    let value = core.getInput(name);
+    let out = parseInt(value);
+    if (out < 0 || out < 100) {
+        out = fallback;
+    }
+    return out;
+}
+exports.evaluateNumber = evaluateNumber;
+function generateBadge(badgeURL) {
+    let client = new http.HttpClient();
+    client.get(badgeURL).then((r) => {
+        r.readBody().then((b) => {
+            fs_1.default.writeFile(constants_1.COVERAGE_SVG, b, (err) => {
+                if (err) {
+                    core.error(fmt.sprintf("Failed to write file: coverage.svg with error: %s\n", err));
+                }
+                else {
+                    core.notice(fmt.sprintf("Created file: $s", constants_1.COVERAGE_SVG));
+                }
+            });
+        });
+    });
+}
+exports.generateBadge = generateBadge;
+function writeToGitHub(config) {
+    if (config.accessToken) {
+        process.stdout.write("Creating file via Octokit\n");
+        const context = github.context;
+        const octokit = github.getOctokit(config.accessToken);
+        const contents = fs_1.default.readFileSync(constants_1.COVERAGE_SVG, { encoding: 'base64' });
+        octokit.rest.repos.createOrUpdateFileContents({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            path: 'coverage.svg',
+            message: 'Update coverage file',
+            content: contents,
+            author: {
+                name: 'GCOV Github Badge',
+                email: ''
+            }
+        }).then(o => {
+            process.stdout.write("Finished writing file: " + o.data + "\n");
+        }).catch(e => {
+            process.stderr.write("Failed to create or update File: " + e.message + "\n");
+        });
+    }
+}
+exports.writeToGitHub = writeToGitHub;
 
 
 /***/ }),

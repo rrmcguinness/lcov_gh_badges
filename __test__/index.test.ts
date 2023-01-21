@@ -1,5 +1,5 @@
-import {evaluate} from '../src/runner';
 import {describe} from 'mocha';
+import {run} from "../src";
 
 function SetupActionEnvironmentFromArgv() {
   process.argv.forEach(function (val, index, array) {
@@ -19,5 +19,5 @@ function SetupActionEnvironmentFromArgv() {
 
 describe("Main Test", function() {
   SetupActionEnvironmentFromArgv();
-  let promise = new Promise(evaluate);
+  let promise = run()
 })

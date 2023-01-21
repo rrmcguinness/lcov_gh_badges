@@ -11,8 +11,6 @@
   "exclude": [
     "../node_modules", "**/*.spec.ts"],
   "files": [
-    "config.ts",
-    "runner.ts",
-    "stats.ts"
+    "./*.ts"
   ]
 }
