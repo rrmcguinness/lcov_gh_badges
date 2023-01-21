@@ -179,9 +179,11 @@ async function run() {
     core.setCommandEcho(true);
     let run = runner.evaluate();
     if (run != 0) {
+        core.error("Failed execution of the executor");
         core.setOutput("COVERAGE_STATUS", false);
     }
     else {
+        core.notice("Coverage Complete");
         core.setOutput("COVERAGE_STATUS", true);
     }
 }
