@@ -6,16 +6,18 @@ import * as http from '@actions/http-client';
 import * as fs from 'fs';
 import * as fmt from 'sprintf-js';
 
+const COVERAGE_SVG = "coverage.svg";
+
 function generateBadge(badgeURL : string)  {
 
   let client: http.HttpClient = new http.HttpClient()
   client.get(badgeURL).then((r : http.HttpClientResponse) => {
     r.readBody().then((b: string) => {
-      fs.writeFile("coverage.svg", b, (err) => {
+      fs.writeFile(COVERAGE_SVG, b, (err) => {
         if (err) {
           core.error(fmt.sprintf("Failed to write file: coverage.svg with error: %s\n", err));
         } else {
-          core.info(fmt.sprintf("Created file: coverage.svg"));
+          core.notice(fmt.sprintf("Created file: $s", COVERAGE_SVG));
         }
       })
     })

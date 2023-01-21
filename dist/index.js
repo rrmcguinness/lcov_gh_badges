@@ -225,16 +225,17 @@ const core = __importStar(__nccwpck_require__(186));
 const http = __importStar(__nccwpck_require__(255));
 const fs = __importStar(__nccwpck_require__(147));
 const fmt = __importStar(__nccwpck_require__(988));
+const COVERAGE_SVG = "coverage.svg";
 function generateBadge(badgeURL) {
     let client = new http.HttpClient();
     client.get(badgeURL).then((r) => {
         r.readBody().then((b) => {
-            fs.writeFile("coverage.svg", b, (err) => {
+            fs.writeFile(COVERAGE_SVG, b, (err) => {
                 if (err) {
                     core.error(fmt.sprintf("Failed to write file: coverage.svg with error: %s\n", err));
                 }
                 else {
-                    core.info(fmt.sprintf("Created file: coverage.svg"));
+                    core.notice(fmt.sprintf("Created file: $s", COVERAGE_SVG));
                 }
             });
         });
