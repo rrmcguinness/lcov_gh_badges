@@ -1,11 +1,18 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
+    "module": "CommonJS",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
     "baseUrl": "./",
     "outDir": "./lib",
     "rootDir": "./src"
   },
   "include": [
-    "./src"
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules", "**/*.spec.ts"
   ]
 }

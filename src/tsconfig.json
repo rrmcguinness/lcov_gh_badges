@@ -10,10 +10,11 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node"
   },
-  "include": ["src/**/*"],
   "exclude": [
     "../node_modules", "**/*.spec.ts"],
   "files": [
-    "../index.ts"
+    "config.ts",
+    "runner.ts",
+    "stats.ts"
   ]
 }
