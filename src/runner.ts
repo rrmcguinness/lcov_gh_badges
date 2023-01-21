@@ -5,6 +5,7 @@ import * as core from '@actions/core';
 import * as http from '@actions/http-client';
 import * as fs from 'fs';
 import * as fmt from 'sprintf-js';
+import * as github from '@actions/github';
 
 const COVERAGE_SVG = "coverage.svg";
 
@@ -60,6 +61,18 @@ function evaluate() : number {
     core.setOutput(Outputs.COVERAGE_SCORE, coverage);
     core.setOutput(Outputs.COVERAGE_BADGE_URL, badgeURL);
 
+    if (config.accessToken) {
+      const context = github.context
+      const octokit = github.getOctokit(config.accessToken);
+      const contents = fs.readFileSync(COVERAGE_SVG, {encoding: 'base64'});
+      octokit.rest.repos.createOrUpdateFileContents({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        path: 'coverage.svg',
+        message: 'Update coverage file',
+        content: contents
+      })
+    }
   } catch (e) {
     if (e instanceof Error) {
       core.setFailed(e.message);
