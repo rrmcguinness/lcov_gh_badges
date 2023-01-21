@@ -51,7 +51,7 @@ async function run() {
     writeToGitHub(config)
   } catch (e) {
     if (e instanceof Error) {
-      core.error("Failed execution of the executor");
+      core.error("Failed execution of the executor: " + e.message);
       core.setOutput("COVERAGE_STATUS", false);
     } else {
       core.notice("Coverage Complete");

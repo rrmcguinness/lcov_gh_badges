@@ -255,7 +255,7 @@ async function run() {
     }
     catch (e) {
         if (e instanceof Error) {
-            core.error("Failed execution of the executor");
+            core.error("Failed execution of the executor: " + e.message);
             core.setOutput("COVERAGE_STATUS", false);
         }
         else {
@@ -510,7 +510,7 @@ function generateBadge(badgeURL) {
                     core.error(fmt.sprintf("Failed to write file: coverage.svg with error: %s\n", err));
                 }
                 else {
-                    core.notice(fmt.sprintf("Created file: $s", constants_1.COVERAGE_SVG));
+                    core.notice(fmt.sprintf("Created file: %s", constants_1.COVERAGE_SVG));
                 }
             });
         });

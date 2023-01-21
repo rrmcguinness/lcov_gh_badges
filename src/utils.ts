@@ -49,7 +49,7 @@ function generateBadge(badgeURL : string)  {
                 if (err) {
                     core.error(fmt.sprintf("Failed to write file: coverage.svg with error: %s\n", err));
                 } else {
-                    core.notice(fmt.sprintf("Created file: $s", COVERAGE_SVG));
+                    core.notice(fmt.sprintf("Created file: %s", COVERAGE_SVG));
                 }
             })
         })
