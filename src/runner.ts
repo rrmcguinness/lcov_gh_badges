@@ -61,7 +61,10 @@ function evaluate() : number {
     core.setOutput(Outputs.COVERAGE_SCORE, coverage);
     core.setOutput(Outputs.COVERAGE_BADGE_URL, badgeURL);
 
+    process.stdout.write("Generated Badge\n");
+
     if (config.accessToken) {
+      process.stdout.write("Creating file via Octokit\n");
       const context = github.context
       const octokit = github.getOctokit(config.accessToken);
       const contents = fs.readFileSync(COVERAGE_SVG, {encoding: 'base64'});
@@ -70,7 +73,15 @@ function evaluate() : number {
         repo: context.repo.repo,
         path: 'coverage.svg',
         message: 'Update coverage file',
-        content: contents
+        content: contents,
+        author: {
+          name: 'GCOV Github Badge',
+          email: ''
+        }
+      }).then(o => {
+        process.stdout.write("Finished writing file: " + o.data + "\n");
+      }).catch(e => {
+        process.stderr.write("Failed to create or update File: " + e.message + "\n");
       })
     }
   } catch (e) {
