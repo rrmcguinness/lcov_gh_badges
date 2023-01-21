@@ -1,5 +1,4 @@
 .bazelrc.user
-dist
 bazel-out
 
 # IntelliJ Idea
@@ -87,7 +86,6 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
-dist
 
 # Gatsby files
 .cache/
