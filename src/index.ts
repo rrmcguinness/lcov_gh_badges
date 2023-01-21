@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-const core = require('@actions/core');
-const runner = require('./lib/runner');
+import * as core from '@actions/core';
+import * as runner from './runner';
 
 async function run() {
   core.setCommandEcho(true)

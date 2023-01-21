@@ -51,4 +51,4 @@ outputs:
     description: 'The URL used to generate the badge'
 runs:
   using: 'node16'
-  main: 'index.js'
+  main: 'lib/index.ts'
