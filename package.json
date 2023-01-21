@@ -8,7 +8,7 @@
     "url": "https://github.com/rrmcguinness/lcov_gh_badges/issues"
   },
   "homepage": "https://github.com/rrmcguinness/lcov_gh_badges#readme",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "types": "src/index.ts",
   "directories": {
     "lib": "lib",
@@ -22,6 +22,7 @@
     "access": "public"
   },
   "scripts": {
+    "clean": "rm -Rf ./lib && rm -Rf ./dist",
     "lint": "eslint .",
     "build": "tsc",
     "prepare": "npm run build && ncc build lib/index.js -o dist --source-map --license LICENSE",
