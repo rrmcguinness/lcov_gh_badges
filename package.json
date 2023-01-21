@@ -21,7 +21,7 @@
     "access": "public"
   },
   "scripts": {
-    "audit-moderate": "npm install && npm audit --json --audit-level=moderate > audit.json",
+    "build": "tsc --build ",
     "test": "ts-mocha -p __test__/tsconfig.json __test__/**/*.ts",
     "tsc": "tsc"
   },
@@ -53,5 +53,8 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.1"
+  },
+  "engines": {
+    "node": ">=16.x"
   }
 }
