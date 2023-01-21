@@ -24,10 +24,10 @@
   "scripts": {
     "lint": "eslint .",
     "build": "tsc",
-    "prepare": "ncc build lib/index.js -o dist --source-map --license LICENSE",
+    "prepare": "npm run build && ncc build lib/index.js -o dist --source-map --license LICENSE",
     "test": "ts-mocha -p __test__/tsconfig.json __test__/**/*.ts",
     "tsc": "tsc",
-    "all": "npm run build && npm run prepare && npm run test"
+    "all": "npm run prepare && npm run test"
   },
   "repository": {
     "type": "git",
