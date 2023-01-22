@@ -523,6 +523,7 @@ const fs_1 = __importDefault(__nccwpck_require__(7147));
 const constants_1 = __nccwpck_require__(5105);
 const fmt = __importStar(__nccwpck_require__(3988));
 const github = __importStar(__nccwpck_require__(5438));
+const crypto_1 = __nccwpck_require__(6113);
 function evaluateString(name, fallback) {
     let value = core.getInput(name);
     if (value === null || value === undefined || value.trim() === '') {
@@ -540,8 +541,18 @@ function evaluateNumber(name, fallback) {
     return out;
 }
 exports.evaluateNumber = evaluateNumber;
+function computeExistingHash() {
+    let hash = '';
+    if (fs_1.default.existsSync(constants_1.COVERAGE_SVG)) {
+        const buff = fs_1.default.readFileSync(constants_1.COVERAGE_SVG);
+        hash = (0, crypto_1.createHash)("sha256").update(buff).digest("hex");
+        process.stdout.write(fmt.sprintf("SUM: %s\n", hash));
+    }
+    return hash;
+}
 function generateBadge(config, badgeURL) {
     let client = new http.HttpClient();
+    const hash = computeExistingHash();
     client.get(badgeURL).then((r) => {
         r.readBody().then((b) => {
             fs_1.default.writeFile(constants_1.COVERAGE_SVG, b, (err) => {
@@ -550,14 +561,14 @@ function generateBadge(config, badgeURL) {
                 }
                 else {
                     core.notice(fmt.sprintf("Created file: %s", constants_1.COVERAGE_SVG));
-                    writeToGitHub(config);
+                    writeToGitHub(config, hash);
                 }
             });
         });
     });
 }
 exports.generateBadge = generateBadge;
-function writeToGitHub(config) {
+function writeToGitHub(config, hash) {
     if (config.accessToken) {
         process.stdout.write("Creating file via Octokit\n");
         const context = github.context;
@@ -573,7 +584,7 @@ function writeToGitHub(config) {
                 name: 'GCOV Github Badge',
                 email: 'build@github.com'
             },
-            mediaType: {}
+            sha: hash
         }).then(o => {
             process.stdout.write("Finished writing file: " + o.data + "\n");
         }).catch(e => {

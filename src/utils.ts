@@ -23,6 +23,7 @@ import {COVERAGE_SVG} from "./constants";
 import * as fmt from "sprintf-js";
 import {Config} from "./config";
 import * as github from "@actions/github";
+import {createHash} from 'crypto';
 
 function evaluateString(name: string, fallback: string) : string {
     let value = core.getInput(name);
@@ -41,8 +42,19 @@ function evaluateNumber(name: string, fallback: number) : number {
     return out
 }
 
+function computeExistingHash() : string {
+    let hash: string = '';
+    if (fs.existsSync(COVERAGE_SVG)) {
+        const buff = fs.readFileSync(COVERAGE_SVG);
+        hash = createHash("sha256").update(buff).digest("hex")
+        process.stdout.write(fmt.sprintf("SUM: %s\n", hash))
+    }
+    return hash
+}
+
 function generateBadge(config: Config, badgeURL: string)  {
     let client: http.HttpClient = new http.HttpClient()
+    const hash = computeExistingHash();
     client.get(badgeURL).then((r : http.HttpClientResponse) => {
         r.readBody().then((b: string) => {
             fs.writeFile(COVERAGE_SVG, b, (err) => {
@@ -50,14 +62,14 @@ function generateBadge(config: Config, badgeURL: string)  {
                     core.error(fmt.sprintf("Failed to write file: coverage.svg with error: %s\n", err));
                 } else {
                     core.notice(fmt.sprintf("Created file: %s", COVERAGE_SVG));
-                    writeToGitHub(config)
+                    writeToGitHub(config, hash)
                 }
             })
         })
     })
 }
 
-function writeToGitHub(config : Config) {
+function writeToGitHub(config : Config, hash: string) {
     if (config.accessToken) {
         process.stdout.write("Creating file via Octokit\n");
         const context = github.context
@@ -73,9 +85,7 @@ function writeToGitHub(config : Config) {
                 name: 'GCOV Github Badge',
                 email: 'build@github.com'
             },
-            mediaType: {
-
-            }
+            sha: hash
         }).then(o => {
             process.stdout.write("Finished writing file: " + o.data + "\n");
         }).catch(e => {
