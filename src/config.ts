@@ -50,18 +50,26 @@ class Config {
     this.iconColor = util.evaluateString(Props.COLOR_ICON, Defaults.COLOR_ICON);
     this.criticalThreshold = util.evaluateNumber(Props.THRESHOLD_CRITICAL, Defaults.THRESHOLD_CRITICAL);
     this.criticalColor = util.evaluateString(Props.COLOR_CRITICAL, Defaults.COLOR_CRITICAL);
-    this.warningThreshold = util.evaluateNumber(Props.THRESHOLD_CRITICAL, Defaults.THRESHOLD_WARNING);
+    this.warningThreshold = util.evaluateNumber(Props.THRESHOLD_WARNING, Defaults.THRESHOLD_WARNING);
     this.warningColor = util.evaluateString(Props.COLOR_WARNING, Defaults.COLOR_WARNING);
     this.successColor = util.evaluateString(Props.COLOR_SUCCESS, Defaults.COLOR_SUCCESS);
   }
 
   computeColor(coverage: number) : string {
-    if (coverage <= this.criticalThreshold) {
+    process.stdout.write(
+        fmt.sprintf("########################### %d :: %d :: %d\n",
+            coverage,
+            this.criticalThreshold,
+            this.warningThreshold));
+
+    if (this.criticalThreshold >= coverage) {
       return this.criticalColor;
-    } else if (coverage <= this.warningThreshold &&
-        coverage > this.criticalThreshold) {
+    }
+    if (this.criticalThreshold < coverage &&
+     this.warningThreshold >= coverage) {
       return this.warningColor;
     }
+
     return this.successColor;
   }
 

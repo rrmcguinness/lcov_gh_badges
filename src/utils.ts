@@ -26,7 +26,7 @@ import * as github from "@actions/github";
 
 function evaluateString(name: string, fallback: string) : string {
     let value = core.getInput(name);
-    if (value === null || value === undefined || value === '') {
+    if (value === null || value === undefined || value.trim() === '') {
         value = fallback
     }
     return value
@@ -35,7 +35,8 @@ function evaluateString(name: string, fallback: string) : string {
 function evaluateNumber(name: string, fallback: number) : number {
     let value = core.getInput(name)
     let out = parseInt(value)
-    if (out < 0 || out < 100) {
+    process.stdout.write(fmt.sprintf("---- %s => %d\n", name, out))
+    if (isNaN(out) || out >= 0 || out < 100) {
         out = fallback
     }
     return out

@@ -67,16 +67,17 @@ class Config {
         this.iconColor = util.evaluateString(constants_1.Props.COLOR_ICON, constants_1.Defaults.COLOR_ICON);
         this.criticalThreshold = util.evaluateNumber(constants_1.Props.THRESHOLD_CRITICAL, constants_1.Defaults.THRESHOLD_CRITICAL);
         this.criticalColor = util.evaluateString(constants_1.Props.COLOR_CRITICAL, constants_1.Defaults.COLOR_CRITICAL);
-        this.warningThreshold = util.evaluateNumber(constants_1.Props.THRESHOLD_CRITICAL, constants_1.Defaults.THRESHOLD_WARNING);
+        this.warningThreshold = util.evaluateNumber(constants_1.Props.THRESHOLD_WARNING, constants_1.Defaults.THRESHOLD_WARNING);
         this.warningColor = util.evaluateString(constants_1.Props.COLOR_WARNING, constants_1.Defaults.COLOR_WARNING);
         this.successColor = util.evaluateString(constants_1.Props.COLOR_SUCCESS, constants_1.Defaults.COLOR_SUCCESS);
     }
     computeColor(coverage) {
-        if (coverage <= this.criticalThreshold) {
+        process.stdout.write(fmt.sprintf("########################### %d :: %d :: %d\n", coverage, this.criticalThreshold, this.warningThreshold));
+        if (this.criticalThreshold >= coverage) {
             return this.criticalColor;
         }
-        else if (coverage <= this.warningThreshold &&
-            coverage > this.criticalThreshold) {
+        if (this.criticalThreshold < coverage &&
+            this.warningThreshold >= coverage) {
             return this.warningColor;
         }
         return this.successColor;
@@ -525,7 +526,7 @@ const fmt = __importStar(__nccwpck_require__(3988));
 const github = __importStar(__nccwpck_require__(5438));
 function evaluateString(name, fallback) {
     let value = core.getInput(name);
-    if (value === null || value === undefined || value === '') {
+    if (value === null || value === undefined || value.trim() === '') {
         value = fallback;
     }
     return value;
@@ -534,7 +535,8 @@ exports.evaluateString = evaluateString;
 function evaluateNumber(name, fallback) {
     let value = core.getInput(name);
     let out = parseInt(value);
-    if (out < 0 || out < 100) {
+    process.stdout.write(fmt.sprintf("---- %s => %d\n", name, out));
+    if (isNaN(out) || out >= 0 || out < 100) {
         out = fallback;
     }
     return out;
