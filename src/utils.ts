@@ -82,9 +82,6 @@ function writeToGitHub(config : Config, hash: string) {
             owner: context.repo.owner,
             repo: context.repo.repo,
             path: COVERAGE_SVG}).then(value => {
-                // TODO - Output Value
-                process.stdout.write(fmt.sprintf("Called getContent, received:\n %s\n\n", JSON.stringify(value)))
-
                 if ('data' in value && 'sha' in value.data) {
                     const sha : string = value.data.sha as string
                     process.stdout.write(fmt.sprintf("Using octokit sha: %s\n", sha));
@@ -107,10 +104,11 @@ function writeToGitHub(config : Config, hash: string) {
                         })
                     }
                 } else {
-                    core.error("Failed to get SHA for file");
+                    core.warning("Failed to get hash from file, attempting a new file.")
+                    throw(new Error("Failed to get hash"))
                 }
         }).catch(r => {
-            process.stdout.write("Failed to get object, trying to create\n");
+            process.stdout.write(fmt.sprintf("Attempting to create file: %s\n", r.message));
             octokit.rest.repos.createOrUpdateFileContents({
                 owner: context.repo.owner,
                 repo: context.repo.repo,

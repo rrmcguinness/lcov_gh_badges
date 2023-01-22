@@ -12,14 +12,26 @@ creates the SVG file and saves it to the repository under 'coverage.svg'.
 
 Once generated, it can be linked into a README.md file.
 
-```markdown
-![coverage](coverage.svg)
+## Setup
+
+Add the following ignore to your build file:
+
+### Update Build
+
+```yaml
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**/coverage.svg"
+  pull_request:
 ```
-Example:
 
-![coverage](coverage.svg)
+> IMPORTANT: YOU MUST ADD THE IGNORE TO YOUR BUILD PROCESS, FAILURE TO DO SO WILL
+> CAUSE A BUILD LOOP.
 
-### Minimal Configuration
+#### Add a step to read the coverage file
 ```yaml
 ...
 steps:
@@ -27,7 +39,18 @@ steps:
     file: ./target/coverage.dat
 ```
 
-### Complete Configuration
+### Add the badge
+
+Add the badge file to a README.md file or AsciiDoc as a link.
+
+```markdown
+![coverage](coverage.svg)
+```
+Example:
+
+![coverage](coverage.svg)
+
+## Complete Configuration
 ```yaml
 ...
 steps:
@@ -47,13 +70,15 @@ steps:
   message_color: 'ffffff'
 ```
 
-## Variables <a name="varaiables"></a>
+## Output Variables
 
-* COVERAGE_LINES_TESTED
-* COVERAGE_LINES_TOTAL
-* COVERAGE_LINES_INSTRUMENTED
-* COVERAGE_FILES_TOTAL
-* COVERAGE_SCORE - Is equal to: COVERAGE_LINES_TESTED / COVERAGE_LINE_TOTAL
+* coverage_functions_found - total functions found
+* coverage_functions_hit - total functions hit (any > 0)
+* coverage_lines_found total line count
+* coverage_lines_hit - total lines hit (any > 0)
+* coverage_score - The score lines hit / lines found
+* coverage_badge_url - The URL used to generate the badge
+
 
 
 
