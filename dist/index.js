@@ -545,7 +545,7 @@ function computeExistingHash() {
     let hash = '';
     if (fs_1.default.existsSync(constants_1.COVERAGE_SVG)) {
         const buff = fs_1.default.readFileSync(constants_1.COVERAGE_SVG, "utf-8");
-        hash = (0, crypto_1.createHash)("sha2").update(buff).digest("hex");
+        hash = (0, crypto_1.createHash)("sha-256").update(buff).digest("hex");
         process.stdout.write(fmt.sprintf("SUM: %s\n", hash));
     }
     return hash;
@@ -574,21 +574,50 @@ function writeToGitHub(config, hash) {
         const context = github.context;
         const octokit = github.getOctokit(config.accessToken);
         const contents = fs_1.default.readFileSync(constants_1.COVERAGE_SVG, { encoding: 'base64' });
-        octokit.rest.repos.createOrUpdateFileContents({
+        octokit.rest.repos.getContent({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            path: constants_1.COVERAGE_SVG,
-            message: 'Update coverage file from lcov_gh_badges',
-            content: contents,
-            author: {
-                name: 'GCOV Github Badge',
-                email: 'build@github.com'
-            },
-            sha: hash
-        }).then(o => {
-            process.stdout.write("Finished writing file: " + o.data + "\n");
-        }).catch(e => {
-            process.stderr.write("Failed to create or update File: " + e.message + "\n");
+            path: constants_1.COVERAGE_SVG
+        }).then(value => {
+            if ('sha' in value) {
+                const sha = value['sha'];
+                process.stdout.write("Using octo sha\n");
+                if (sha) {
+                    octokit.rest.repos.createOrUpdateFileContents({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        path: constants_1.COVERAGE_SVG,
+                        message: 'Update coverage file from lcov_gh_badges',
+                        content: contents,
+                        author: {
+                            name: 'GCOV Github Badge',
+                            email: 'build@github.com'
+                        },
+                        sha: sha
+                    }).then(o => {
+                        process.stdout.write("Finished writing file: " + o.data + "\n");
+                    }).catch(e => {
+                        process.stderr.write("Failed to create or update File: " + e.message + "\n");
+                    });
+                }
+            }
+        }).catch(r => {
+            process.stdout.write("Failed to get object, trying to create\n");
+            octokit.rest.repos.createOrUpdateFileContents({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: constants_1.COVERAGE_SVG,
+                message: 'Update coverage file from lcov_gh_badges',
+                content: contents,
+                author: {
+                    name: 'GCOV Github Badge',
+                    email: 'build@github.com'
+                }
+            }).then(o => {
+                process.stdout.write("Finished writing file: " + o.data + "\n");
+            }).catch(e => {
+                process.stderr.write("Failed to create or update File: " + e.message + "\n");
+            });
         });
     }
 }
