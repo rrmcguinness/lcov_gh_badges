@@ -531,7 +531,7 @@ function writeToGitHub(config) {
             content: contents,
             author: {
                 name: 'GCOV Github Badge',
-                email: ''
+                email: 'build@github.com'
             }
         }).then(o => {
             process.stdout.write("Finished writing file: " + o.data + "\n");
