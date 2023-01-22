@@ -580,7 +580,7 @@ function writeToGitHub(config, hash) {
             path: constants_1.COVERAGE_SVG
         }).then(value => {
             // TODO - Output Value
-            process.stdout.write(fmt.sprintf("Called getContent, received:\n %v\n\n", value));
+            process.stdout.write(fmt.sprintf("Called getContent, received:\n %s\n\n", JSON.stringify(value)));
             if ('sha' in value) {
                 const sha = value['sha'];
                 process.stdout.write("Using octokit sha\n");
