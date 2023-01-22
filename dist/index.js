@@ -544,7 +544,7 @@ exports.evaluateNumber = evaluateNumber;
 function computeExistingHash() {
     let hash = '';
     if (fs_1.default.existsSync(constants_1.COVERAGE_SVG)) {
-        const buff = fs_1.default.readFileSync(constants_1.COVERAGE_SVG);
+        const buff = fs_1.default.readFileSync(constants_1.COVERAGE_SVG, "utf-8");
         hash = (0, crypto_1.createHash)("sha1").update(buff).digest("hex");
         process.stdout.write(fmt.sprintf("SUM: %s\n", hash));
     }

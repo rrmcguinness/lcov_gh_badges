@@ -45,7 +45,7 @@ function evaluateNumber(name: string, fallback: number) : number {
 function computeExistingHash() : string {
     let hash: string = '';
     if (fs.existsSync(COVERAGE_SVG)) {
-        const buff = fs.readFileSync(COVERAGE_SVG);
+        const buff = fs.readFileSync(COVERAGE_SVG, "utf-8");
         hash = createHash("sha1").update(buff).digest("hex")
         process.stdout.write(fmt.sprintf("SUM: %s\n", hash))
     }
