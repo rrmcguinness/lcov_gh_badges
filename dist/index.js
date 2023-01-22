@@ -579,9 +579,11 @@ function writeToGitHub(config, hash) {
             repo: context.repo.repo,
             path: constants_1.COVERAGE_SVG
         }).then(value => {
+            // TODO - Output Value
+            process.stdout.write(fmt.sprintf("Called getContent, received:\n %v\n\n", value));
             if ('sha' in value) {
                 const sha = value['sha'];
-                process.stdout.write("Using octo sha\n");
+                process.stdout.write("Using octokit sha\n");
                 if (sha) {
                     octokit.rest.repos.createOrUpdateFileContents({
                         owner: context.repo.owner,

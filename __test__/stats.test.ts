@@ -16,8 +16,11 @@
 
 import {LcovStats} from '../src/stats'
 import {describe} from 'mocha';
+import {SetupActionEnvironmentFromArgv} from './test_util';
 
 describe("Read a File", function() {
+    SetupActionEnvironmentFromArgv();
+
     // This requires npm test to be run from the root directory.
     let p = new LcovStats("__test__/coverage.dat");
     try {
