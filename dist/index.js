@@ -545,7 +545,7 @@ function computeExistingHash() {
     let hash = '';
     if (fs_1.default.existsSync(constants_1.COVERAGE_SVG)) {
         const buff = fs_1.default.readFileSync(constants_1.COVERAGE_SVG, "utf-8");
-        hash = (0, crypto_1.createHash)("sha256").update(buff).digest("hex");
+        hash = (0, crypto_1.createHash)("sha2").update(buff).digest("hex");
         process.stdout.write(fmt.sprintf("SUM: %s\n", hash));
     }
     return hash;
@@ -584,7 +584,7 @@ function writeToGitHub(config, hash) {
                 name: 'GCOV Github Badge',
                 email: 'build@github.com'
             },
-            sha: context.sha
+            sha: hash
         }).then(o => {
             process.stdout.write("Finished writing file: " + o.data + "\n");
         }).catch(e => {
