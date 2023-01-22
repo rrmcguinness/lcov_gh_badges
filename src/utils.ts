@@ -87,7 +87,7 @@ function writeToGitHub(config : Config, hash: string) {
 
                 if ('data' in value && 'sha' in value.data) {
                     const sha : string = value.data.sha as string
-                    process.stdout.write("Using octokit sha\n");
+                    process.stdout.write(fmt.sprintf("Using octokit sha: %s\n", sha));
                     if (sha) {
                         octokit.rest.repos.createOrUpdateFileContents({
                             owner: context.repo.owner,
@@ -107,7 +107,7 @@ function writeToGitHub(config : Config, hash: string) {
                         })
                     }
                 } else {
-                    throw(new Error("No SHA found"));
+                    core.error("Failed to get SHA for file");
                 }
         }).catch(r => {
             process.stdout.write("Failed to get object, trying to create\n");
