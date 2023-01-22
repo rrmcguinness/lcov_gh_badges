@@ -1,8 +1,9 @@
 # lcov_gh_badges
 
 ## TL;DR
-A GitHub Action for creating markdown embeddable badges directory from an 
-LCOV .dat file.
+
+A GitHub Action for creating markdown embeddable badges, saved to your repository, directly from an 
+LCOV data file.
 
 ## Details
 
