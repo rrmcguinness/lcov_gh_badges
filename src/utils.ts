@@ -46,7 +46,7 @@ function computeExistingHash() : string {
     let hash: string = '';
     if (fs.existsSync(COVERAGE_SVG)) {
         const buff = fs.readFileSync(COVERAGE_SVG, "utf-8");
-        hash = createHash("sha1").update(buff).digest("hex")
+        hash = createHash("sha256").update(buff).digest("hex")
         process.stdout.write(fmt.sprintf("SUM: %s\n", hash))
     }
     return hash
@@ -85,7 +85,7 @@ function writeToGitHub(config : Config, hash: string) {
                 name: 'GCOV Github Badge',
                 email: 'build@github.com'
             },
-            sha: hash
+            sha: context.sha
         }).then(o => {
             process.stdout.write("Finished writing file: " + o.data + "\n");
         }).catch(e => {
