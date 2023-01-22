@@ -72,7 +72,6 @@ class Config {
         this.successColor = util.evaluateString(constants_1.Props.COLOR_SUCCESS, constants_1.Defaults.COLOR_SUCCESS);
     }
     computeColor(coverage) {
-        process.stdout.write(fmt.sprintf("########################### %d :: %d :: %d\n", coverage, this.criticalThreshold, this.warningThreshold));
         if (this.criticalThreshold >= coverage) {
             return this.criticalColor;
         }
@@ -535,7 +534,6 @@ exports.evaluateString = evaluateString;
 function evaluateNumber(name, fallback) {
     let value = core.getInput(name);
     let out = parseInt(value);
-    process.stdout.write(fmt.sprintf("---- %s => %d\n", name, out));
     if (isNaN(out) || out >= 0 || out < 100) {
         out = fallback;
     }
@@ -568,13 +566,14 @@ function writeToGitHub(config) {
         octokit.rest.repos.createOrUpdateFileContents({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            path: 'coverage.svg',
+            path: constants_1.COVERAGE_SVG,
             message: 'Update coverage file from lcov_gh_badges',
             content: contents,
             author: {
                 name: 'GCOV Github Badge',
                 email: 'build@github.com'
-            }
+            },
+            mediaType: {}
         }).then(o => {
             process.stdout.write("Finished writing file: " + o.data + "\n");
         }).catch(e => {

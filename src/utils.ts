@@ -35,7 +35,6 @@ function evaluateString(name: string, fallback: string) : string {
 function evaluateNumber(name: string, fallback: number) : number {
     let value = core.getInput(name)
     let out = parseInt(value)
-    process.stdout.write(fmt.sprintf("---- %s => %d\n", name, out))
     if (isNaN(out) || out >= 0 || out < 100) {
         out = fallback
     }
@@ -67,12 +66,15 @@ function writeToGitHub(config : Config) {
         octokit.rest.repos.createOrUpdateFileContents({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            path: 'coverage.svg',
+            path: COVERAGE_SVG,
             message: 'Update coverage file from lcov_gh_badges',
             content: contents,
             author: {
                 name: 'GCOV Github Badge',
                 email: 'build@github.com'
+            },
+            mediaType: {
+
             }
         }).then(o => {
             process.stdout.write("Finished writing file: " + o.data + "\n");

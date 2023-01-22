@@ -56,15 +56,10 @@ class Config {
   }
 
   computeColor(coverage: number) : string {
-    process.stdout.write(
-        fmt.sprintf("########################### %d :: %d :: %d\n",
-            coverage,
-            this.criticalThreshold,
-            this.warningThreshold));
-
     if (this.criticalThreshold >= coverage) {
       return this.criticalColor;
     }
+
     if (this.criticalThreshold < coverage &&
      this.warningThreshold >= coverage) {
       return this.warningColor;
@@ -95,7 +90,6 @@ class Config {
     parts.push(fmt.sprintf(Icons.COLOR, this.computeColor(coverage)));
     parts.push(fmt.sprintf(Icons.STYLE, this.style));
     parts.push(fmt.sprintf(Icons.MESSAGE, coverage))
-
     return Icons.PREFIX + parts.join('&') + `%`;
   }
 }
