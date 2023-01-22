@@ -48,6 +48,9 @@ class LineNumberHitCount {
   }
 }
 
+/**
+ * The statistics state holder object.
+ */
 class FileStats {
   sourceFile: string;
   functionsFound: number = 0;

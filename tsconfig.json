@@ -9,7 +9,8 @@
     "declaration": true,
     "outDir": "./lib",
     "rootDir": "./src",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "sourceMap": false
   },
   "include": [
     "./src"

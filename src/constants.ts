@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * The constants file hold all constant objects.
+ */
 const COVERAGE_SVG = "coverage.svg";
-
+/**
+ * Defines the output variables used by the action.
+ */
 const Outputs = {
     COVERAGE_FUNCTIONS_FOUND: 'coverage_functions_found',
     COVERAGE_FUNCTIONS_HIT: 'coverage_functions_hit',
@@ -25,6 +30,9 @@ const Outputs = {
     COVERAGE_BADGE_URL: 'coverage_badge_url',
 }
 
+/**
+ * Defines the default values used if not specified.
+ */
 const Defaults = {
     STYLE: 'flat',
     ICON: 'googlecloud',
@@ -39,6 +47,9 @@ const Defaults = {
     COLOR_CRITICAL: '9c2c2c'
 }
 
+/**
+ * The property names used in the action.yml file.
+ */
 const Props = {
     ACCESS_TOKEN: "access_token",
     FILE: 'file',
@@ -55,6 +66,9 @@ const Props = {
     COLOR_CRITICAL: 'critical_color'
 }
 
+/**
+ * The constants used for building the SVG URL.
+ */
 const Icons = {
     PREFIX: 'https://img.shields.io/static/v1?',
     LABEL: 'label=%s',

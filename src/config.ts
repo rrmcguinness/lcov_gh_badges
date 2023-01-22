@@ -19,6 +19,11 @@ import * as util from "./utils";
 import * as core from '@actions/core'
 import * as fmt from 'sprintf-js'
 
+/**
+ * The configuration object holds the state of
+ * configuration for the executor can generate the files
+ * correctly.
+ */
 class Config {
   accessToken: string;
   file: string;
@@ -69,6 +74,10 @@ class Config {
     return valid
   }
 
+  /**
+   * Generates the URL for fetching the SVG file.
+   * @param coverage
+   */
   imageURL(coverage: number) : string {
     let parts = new Array<String>();
     parts.push(fmt.sprintf(Icons.LABEL, this.label));

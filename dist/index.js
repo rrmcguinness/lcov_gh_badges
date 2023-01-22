@@ -50,6 +50,11 @@ const constants_1 = __nccwpck_require__(5105);
 const util = __importStar(__nccwpck_require__(918));
 const core = __importStar(__nccwpck_require__(2186));
 const fmt = __importStar(__nccwpck_require__(3988));
+/**
+ * The configuration object holds the state of
+ * configuration for the executor can generate the files
+ * correctly.
+ */
 class Config {
     constructor() {
         this.accessToken = util.evaluateString(constants_1.Props.ACCESS_TOKEN, '');
@@ -84,6 +89,10 @@ class Config {
         }
         return valid;
     }
+    /**
+     * Generates the URL for fetching the SVG file.
+     * @param coverage
+     */
     imageURL(coverage) {
         let parts = new Array();
         parts.push(fmt.sprintf(constants_1.Icons.LABEL, this.label));
@@ -123,8 +132,14 @@ exports.Config = Config;
  */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.COVERAGE_SVG = exports.Outputs = exports.Icons = exports.Props = exports.Defaults = void 0;
+/**
+ * The constants file hold all constant objects.
+ */
 const COVERAGE_SVG = "coverage.svg";
 exports.COVERAGE_SVG = COVERAGE_SVG;
+/**
+ * Defines the output variables used by the action.
+ */
 const Outputs = {
     COVERAGE_FUNCTIONS_FOUND: 'coverage_functions_found',
     COVERAGE_FUNCTIONS_HIT: 'coverage_functions_hit',
@@ -134,6 +149,9 @@ const Outputs = {
     COVERAGE_BADGE_URL: 'coverage_badge_url',
 };
 exports.Outputs = Outputs;
+/**
+ * Defines the default values used if not specified.
+ */
 const Defaults = {
     STYLE: 'flat',
     ICON: 'googlecloud',
@@ -148,6 +166,9 @@ const Defaults = {
     COLOR_CRITICAL: '9c2c2c'
 };
 exports.Defaults = Defaults;
+/**
+ * The property names used in the action.yml file.
+ */
 const Props = {
     ACCESS_TOKEN: "access_token",
     FILE: 'file',
@@ -164,6 +185,9 @@ const Props = {
     COLOR_CRITICAL: 'critical_color'
 };
 exports.Props = Props;
+/**
+ * The constants used for building the SVG URL.
+ */
 const Icons = {
     PREFIX: 'https://img.shields.io/static/v1?',
     LABEL: 'label=%s',
@@ -229,6 +253,19 @@ const config_1 = __nccwpck_require__(88);
 const stats_1 = __nccwpck_require__(4204);
 const constants_1 = __nccwpck_require__(5105);
 const utils_1 = __nccwpck_require__(918);
+/**
+ * This is the main program executed by the action.
+ * The steps are as follows:
+ *
+ * 1) Read the LCOV file.
+ * 2) Update the stats in the stats object.
+ * 3) Generate a coverage report.
+ * 4) Use the coverage report to call badges.io and generate the SVG file.
+ * 5) Download the file.
+ * 6) If there is an access token, check the file into GitHub.
+ *
+ * The file may then be accessed via a simple URL in and README file.
+ */
 async function run() {
     try {
         let config = new config_1.Config();
@@ -343,6 +380,9 @@ class LineNumberHitCount {
         }
     }
 }
+/**
+ * The statistics state holder object.
+ */
 class FileStats {
     constructor(sourceFile) {
         this.functionsFound = 0;
@@ -527,7 +567,7 @@ function writeToGitHub(config) {
             owner: context.repo.owner,
             repo: context.repo.repo,
             path: 'coverage.svg',
-            message: 'Update coverage file',
+            message: 'Update coverage file from lcov_gh_badges',
             content: contents,
             author: {
                 name: 'GCOV Github Badge',

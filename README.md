@@ -8,8 +8,16 @@ LCOV .dat file.
 
 This work is based off of the work from schneegans/dynamic-badges-action@v1.6.0
 with a difference in that it evaluates the LCOV data format, and automatically
-places the values into [environment vairables](#variables). These variable are then used
-to create a Gist that can be embedded into an icon URL.
+creates the SVG file and saves it to the repository under 'coverage.svg'.
+
+Once generated, it can be linked into a README.md file.
+
+```markdown
+![coverage](coverage.svg)
+```
+Example:
+
+![coverage](coverage.svg)
 
 ### Minimal Configuration
 ```yaml
@@ -25,7 +33,7 @@ steps:
 steps:
 - uses: rrmcguinness/lcov_gh_badges@v1.0.0
   file: ./target/coverage.dat
-  accessToken: ${ACCESS_TOKEN}
+  access_token: ${{ secret.COVERAGE_TOKEN }}
   style: flat
   icon_name: googlecloud,
   icon_color: 'ffffff',

@@ -20,6 +20,19 @@ import {LcovStats} from "./stats";
 import {Outputs} from "./constants";
 import {generateBadge} from "./utils";
 
+/**
+ * This is the main program executed by the action.
+ * The steps are as follows:
+ *
+ * 1) Read the LCOV file.
+ * 2) Update the stats in the stats object.
+ * 3) Generate a coverage report.
+ * 4) Use the coverage report to call badges.io and generate the SVG file.
+ * 5) Download the file.
+ * 6) If there is an access token, check the file into GitHub.
+ *
+ * The file may then be accessed via a simple URL in and README file.
+ */
 async function run() {
   try {
     let config = new Config();

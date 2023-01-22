@@ -67,7 +67,7 @@ function writeToGitHub(config : Config) {
             owner: context.repo.owner,
             repo: context.repo.repo,
             path: 'coverage.svg',
-            message: 'Update coverage file',
+            message: 'Update coverage file from lcov_gh_badges',
             content: contents,
             author: {
                 name: 'GCOV Github Badge',
