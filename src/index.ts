@@ -18,7 +18,7 @@ import * as core from '@actions/core';
 import {Config} from "./config";
 import {LcovStats} from "./stats";
 import {Outputs} from "./constants";
-import {generateBadge, writeToGitHub} from "./utils";
+import {generateBadge} from "./utils";
 
 async function run() {
   try {
@@ -37,7 +37,7 @@ async function run() {
     let badgeURL = config.imageURL(coverage);
 
     // Generate the Badge File
-    generateBadge(badgeURL)
+    generateBadge(config,  badgeURL)
     process.stdout.write("Generated Badge\n");
 
     // Set Output
@@ -47,8 +47,6 @@ async function run() {
     core.setOutput(Outputs.COVERAGE_LINES_HIT, stats.linesHit);
     core.setOutput(Outputs.COVERAGE_SCORE, coverage);
     core.setOutput(Outputs.COVERAGE_BADGE_URL, badgeURL);
-
-    writeToGitHub(config)
   } catch (e) {
     if (e instanceof Error) {
       core.error("Failed execution of the executor: " + e.message);

@@ -41,7 +41,7 @@ function evaluateNumber(name: string, fallback: number) : number {
     return out
 }
 
-function generateBadge(badgeURL : string)  {
+function generateBadge(config: Config, badgeURL: string)  {
     let client: http.HttpClient = new http.HttpClient()
     client.get(badgeURL).then((r : http.HttpClientResponse) => {
         r.readBody().then((b: string) => {
@@ -50,6 +50,7 @@ function generateBadge(badgeURL : string)  {
                     core.error(fmt.sprintf("Failed to write file: coverage.svg with error: %s\n", err));
                 } else {
                     core.notice(fmt.sprintf("Created file: %s", COVERAGE_SVG));
+                    writeToGitHub(config)
                 }
             })
         })
@@ -80,4 +81,4 @@ function writeToGitHub(config : Config) {
     }
 }
 
-export{evaluateNumber, evaluateString, generateBadge, writeToGitHub}
+export{evaluateNumber, evaluateString, generateBadge}

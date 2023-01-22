@@ -242,7 +242,7 @@ async function run() {
         // Generate the badge URL
         let badgeURL = config.imageURL(coverage);
         // Generate the Badge File
-        (0, utils_1.generateBadge)(badgeURL);
+        (0, utils_1.generateBadge)(config, badgeURL);
         process.stdout.write("Generated Badge\n");
         // Set Output
         core.setOutput(constants_1.Outputs.COVERAGE_FUNCTIONS_FOUND, stats.functionsFound);
@@ -251,7 +251,6 @@ async function run() {
         core.setOutput(constants_1.Outputs.COVERAGE_LINES_HIT, stats.linesHit);
         core.setOutput(constants_1.Outputs.COVERAGE_SCORE, coverage);
         core.setOutput(constants_1.Outputs.COVERAGE_BADGE_URL, badgeURL);
-        (0, utils_1.writeToGitHub)(config);
     }
     catch (e) {
         if (e instanceof Error) {
@@ -477,7 +476,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.writeToGitHub = exports.generateBadge = exports.evaluateString = exports.evaluateNumber = void 0;
+exports.generateBadge = exports.evaluateString = exports.evaluateNumber = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const http = __importStar(__nccwpck_require__(6255));
 const fs_1 = __importDefault(__nccwpck_require__(7147));
@@ -501,7 +500,7 @@ function evaluateNumber(name, fallback) {
     return out;
 }
 exports.evaluateNumber = evaluateNumber;
-function generateBadge(badgeURL) {
+function generateBadge(config, badgeURL) {
     let client = new http.HttpClient();
     client.get(badgeURL).then((r) => {
         r.readBody().then((b) => {
@@ -511,6 +510,7 @@ function generateBadge(badgeURL) {
                 }
                 else {
                     core.notice(fmt.sprintf("Created file: %s", constants_1.COVERAGE_SVG));
+                    writeToGitHub(config);
                 }
             });
         });
@@ -540,7 +540,6 @@ function writeToGitHub(config) {
         });
     }
 }
-exports.writeToGitHub = writeToGitHub;
 
 
 /***/ }),
