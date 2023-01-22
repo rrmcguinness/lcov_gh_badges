@@ -581,8 +581,8 @@ function writeToGitHub(config, hash) {
         }).then(value => {
             // TODO - Output Value
             process.stdout.write(fmt.sprintf("Called getContent, received:\n %s\n\n", JSON.stringify(value)));
-            if ('sha' in value) {
-                const sha = value['sha'];
+            if ('data' in value && 'sha' in value.data) {
+                const sha = value.data.sha;
                 process.stdout.write("Using octokit sha\n");
                 if (sha) {
                     octokit.rest.repos.createOrUpdateFileContents({
@@ -602,6 +602,9 @@ function writeToGitHub(config, hash) {
                         process.stderr.write("Failed to create or update File: " + e.message + "\n");
                     });
                 }
+            }
+            else {
+                throw (new Error("No SHA found"));
             }
         }).catch(r => {
             process.stdout.write("Failed to get object, trying to create\n");
