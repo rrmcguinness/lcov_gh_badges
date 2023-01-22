@@ -46,7 +46,7 @@ function computeExistingHash() : string {
     let hash: string = '';
     if (fs.existsSync(COVERAGE_SVG)) {
         const buff = fs.readFileSync(COVERAGE_SVG);
-        hash = createHash("sha256").update(buff).digest("hex")
+        hash = createHash("sha1").update(buff).digest("hex")
         process.stdout.write(fmt.sprintf("SUM: %s\n", hash))
     }
     return hash
