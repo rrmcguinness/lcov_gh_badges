@@ -7,6 +7,12 @@ LCOV data file.
 
 ## Details
 
+After looking for and testing several options to create a dynamic badge
+for code coverage from [Bazel](https://bazel.io), and I couldn't find one that
+cleanly read the `bazel coverage //...` output files, so, I created this.
+This project is a solution for many repositories that I have under development
+to get a quick view on code health from the README.md files.
+
 This work is inspired by the work from schneegans/dynamic-badges-action@v1.6.0
 with a difference in that it evaluates the LCOV data format, and downloads
 the SVG file from badges.io, saving it to the repository under 'coverage.svg'.
