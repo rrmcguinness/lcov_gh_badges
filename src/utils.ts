@@ -92,7 +92,6 @@ function writeToGitHub(config: Config) {
         }).then(value => {
             if ('data' in value && 'sha' in value.data) {
                 const sha: string = value.data.sha as string
-                process.stdout.write(fmt.sprintf("Using octokit sha: %s\n", sha));
                 if (sha) {
                     updateOrCreateFile(config.accessToken, contents, sha)
                 }
