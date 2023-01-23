@@ -7,11 +7,11 @@ LCOV data file.
 
 ## Details
 
-This work is based off of the work from schneegans/dynamic-badges-action@v1.6.0
-with a difference in that it evaluates the LCOV data format, and automatically
-creates the SVG file and saves it to the repository under 'coverage.svg'.
+This work is inspired by the work from schneegans/dynamic-badges-action@v1.6.0
+with a difference in that it evaluates the LCOV data format, and downloads
+the SVG file from badges.io, saving it to the repository under 'coverage.svg'.
 
-Once generated, it can be linked into a README.md file.
+Once generated, it MAY be linked in a README.md or other markdown file.
 
 ## Setup
 
