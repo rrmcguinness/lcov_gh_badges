@@ -523,7 +523,6 @@ const fs_1 = __importDefault(__nccwpck_require__(7147));
 const constants_1 = __nccwpck_require__(5105);
 const fmt = __importStar(__nccwpck_require__(3988));
 const github = __importStar(__nccwpck_require__(5438));
-const crypto_1 = __nccwpck_require__(6113);
 function evaluateString(name, fallback) {
     let value = core.getInput(name);
     if (value === null || value === undefined || value.trim() === '') {
@@ -541,18 +540,8 @@ function evaluateNumber(name, fallback) {
     return out;
 }
 exports.evaluateNumber = evaluateNumber;
-function computeExistingHash() {
-    let hash = '';
-    if (fs_1.default.existsSync(constants_1.COVERAGE_SVG)) {
-        const buff = fs_1.default.readFileSync(constants_1.COVERAGE_SVG, "utf-8");
-        hash = (0, crypto_1.createHash)("sha256").update(buff).digest("hex");
-        process.stdout.write(fmt.sprintf("SUM: %s\n", hash));
-    }
-    return hash;
-}
 function generateBadge(config, badgeURL) {
     let client = new http.HttpClient();
-    const hash = computeExistingHash();
     client.get(badgeURL).then((r) => {
         r.readBody().then((b) => {
             fs_1.default.writeFile(constants_1.COVERAGE_SVG, b, (err) => {
@@ -561,7 +550,7 @@ function generateBadge(config, badgeURL) {
                 }
                 else {
                     core.notice(fmt.sprintf("Created file: %s", constants_1.COVERAGE_SVG));
-                    writeToGitHub(config, hash);
+                    writeToGitHub(config);
                 }
             });
         });
@@ -588,7 +577,7 @@ function updateOrCreateFile(accessToken, contents, sha) {
         process.stderr.write("Failed to create or update File: " + e.message + "\n");
     });
 }
-function writeToGitHub(config, hash) {
+function writeToGitHub(config) {
     if (config.accessToken) {
         process.stdout.write("Creating file via Octokit\n");
         const context = github.context;
