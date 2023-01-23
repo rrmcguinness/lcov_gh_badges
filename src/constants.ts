@@ -80,4 +80,4 @@ const Icons = {
     MESSAGE: 'message=%s'
 }
 
-export{ Defaults, Props, Icons, Outputs, COVERAGE_SVG }
+export {Defaults, Props, Icons, Outputs, COVERAGE_SVG}

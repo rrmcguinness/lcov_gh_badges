@@ -15,7 +15,6 @@
  */
 
 
-
 import * as core from "@actions/core";
 import * as http from "@actions/http-client";
 import fs from "fs";
@@ -25,7 +24,7 @@ import {Config} from "./config";
 import * as github from "@actions/github";
 import {createHash} from 'crypto';
 
-function evaluateString(name: string, fallback: string) : string {
+function evaluateString(name: string, fallback: string): string {
     let value = core.getInput(name);
     if (value === null || value === undefined || value.trim() === '') {
         value = fallback
@@ -33,7 +32,7 @@ function evaluateString(name: string, fallback: string) : string {
     return value
 }
 
-function evaluateNumber(name: string, fallback: number) : number {
+function evaluateNumber(name: string, fallback: number): number {
     let value = core.getInput(name)
     let out = parseInt(value)
     if (isNaN(out) || out >= 0 || out < 100) {
@@ -42,7 +41,7 @@ function evaluateNumber(name: string, fallback: number) : number {
     return out
 }
 
-function computeExistingHash() : string {
+function computeExistingHash(): string {
     let hash: string = '';
     if (fs.existsSync(COVERAGE_SVG)) {
         const buff = fs.readFileSync(COVERAGE_SVG, "utf-8");
@@ -52,10 +51,10 @@ function computeExistingHash() : string {
     return hash
 }
 
-function generateBadge(config: Config, badgeURL: string)  {
+function generateBadge(config: Config, badgeURL: string) {
     let client: http.HttpClient = new http.HttpClient()
     const hash = computeExistingHash();
-    client.get(badgeURL).then((r : http.HttpClientResponse) => {
+    client.get(badgeURL).then((r: http.HttpClientResponse) => {
         r.readBody().then((b: string) => {
             fs.writeFile(COVERAGE_SVG, b, (err) => {
                 if (err) {
@@ -69,44 +68,43 @@ function generateBadge(config: Config, badgeURL: string)  {
     })
 }
 
-function writeToGitHub(config : Config, hash: string) {
+function writeToGitHub(config: Config, hash: string) {
     if (config.accessToken) {
         process.stdout.write("Creating file via Octokit\n");
         const context = github.context
         const octokit = github.getOctokit(config.accessToken);
-
-
         const contents = fs.readFileSync(COVERAGE_SVG, {encoding: 'base64'});
 
         octokit.rest.repos.getContent({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            path: COVERAGE_SVG}).then(value => {
-                if ('data' in value && 'sha' in value.data) {
-                    const sha : string = value.data.sha as string
-                    process.stdout.write(fmt.sprintf("Using octokit sha: %s\n", sha));
-                    if (sha) {
-                        octokit.rest.repos.createOrUpdateFileContents({
-                            owner: context.repo.owner,
-                            repo: context.repo.repo,
-                            path: COVERAGE_SVG,
-                            message: 'Update coverage file from lcov_gh_badges',
-                            content: contents,
-                            author: {
-                                name: 'GCOV Github Badge',
-                                email: 'build@github.com'
-                            },
-                            sha: sha
-                        }).then(o => {
-                            process.stdout.write("Finished writing file: " + o.data + "\n");
-                        }).catch(e => {
-                            process.stderr.write("Failed to create or update File: " + e.message + "\n");
-                        })
-                    }
-                } else {
-                    core.warning("Failed to get hash from file, attempting a new file.")
-                    throw(new Error("Failed to get hash"))
+            path: COVERAGE_SVG
+        }).then(value => {
+            if ('data' in value && 'sha' in value.data) {
+                const sha: string = value.data.sha as string
+                process.stdout.write(fmt.sprintf("Using octokit sha: %s\n", sha));
+                if (sha) {
+                    octokit.rest.repos.createOrUpdateFileContents({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        path: COVERAGE_SVG,
+                        message: 'Update coverage file from lcov_gh_badges',
+                        content: contents,
+                        author: {
+                            name: 'GCOV Github Badge',
+                            email: 'build@github.com'
+                        },
+                        sha: sha
+                    }).then(o => {
+                        process.stdout.write("Finished writing file: " + o.data + "\n");
+                    }).catch(e => {
+                        process.stderr.write("Failed to create or update File: " + e.message + "\n");
+                    })
                 }
+            } else {
+                core.warning("Failed to get hash from file, attempting a new file.")
+                throw(new Error("Failed to get hash"))
+            }
         }).catch(r => {
             process.stdout.write(fmt.sprintf("Attempting to create file: %s\n", r.message));
             octokit.rest.repos.createOrUpdateFileContents({
@@ -127,8 +125,7 @@ function writeToGitHub(config : Config, hash: string) {
         })
 
 
-
     }
 }
 
-export{evaluateNumber, evaluateString, generateBadge}
+export {evaluateNumber, evaluateString, generateBadge}
