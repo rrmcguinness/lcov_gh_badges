@@ -80,9 +80,25 @@ steps:
 * coverage_score - The score lines hit / lines found
 * coverage_badge_url - The URL used to generate the badge
 
+## Contributing
 
+I've never claimed to be a Java Script Guru and welcome any thoughts
+recommendations, or pull requests. I've been an OSS supporter and
+contributor for over 25 years, and I've never been one to say:
+"That's someone else's problem."; as such, I highly encourage
+constructive feedback and participation.
 
+### Additional Contributing Information
 
+Please visit the [Google Open Source](https://opensource.google/documentation/reference/releasing/template/CONTRIBUTING)
+page for additional information. If you don't have a CLA on file, fill one out, it's there for your protection.
+
+## License
+
+This project is released under the Apache 2.0 license,
+please read the [License File](./LICENSE) file, or visit
+[Apache 2 License](https://www.apache.org/licenses/LICENSE-2.0)
+for more information.
 
 
 
