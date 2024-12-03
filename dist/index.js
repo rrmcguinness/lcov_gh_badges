@@ -94,7 +94,7 @@ class Config {
      * @param coverage
      */
     imageURL(coverage) {
-        let parts = new Array();
+        const parts = new Array();
         parts.push(fmt.sprintf(constants_1.Icons.LABEL, this.label));
         parts.push(fmt.sprintf(constants_1.Icons.LABEL_COLOR, this.labelColor));
         parts.push(fmt.sprintf(constants_1.Icons.LOGO, this.icon));
@@ -268,16 +268,16 @@ const utils_1 = __nccwpck_require__(918);
  */
 async function run() {
     try {
-        let config = new config_1.Config();
+        const config = new config_1.Config();
         if (!config.validate()) {
             core.error('Invalid Configuration, please check the logs');
             core.setFailed("Invalid Configuration");
         }
         // Compute the statistics
-        let stats = new stats_1.LcovStats(config.file);
-        let coverage = stats.coverage();
+        const stats = new stats_1.LcovStats(config.file);
+        const coverage = stats.coverage();
         // Generate the badge URL
-        let badgeURL = config.imageURL(coverage);
+        const badgeURL = config.imageURL(coverage);
         // Generate the Badge File
         (0, utils_1.generateBadge)(config, badgeURL);
         process.stdout.write("Generated Badge\n");
@@ -371,8 +371,8 @@ class LineNumberHitCount {
         this.lineNumber = 0;
         this.hitCount = 0;
         if (input.startsWith(LCOV.LINE_NUMBER_AND_HIT_COUNT)) {
-            let startIndex = input.indexOf(TOKEN.COLON) + 1;
-            let values = input.substring(startIndex).split(TOKEN.COMMA);
+            const startIndex = input.indexOf(TOKEN.COLON) + 1;
+            const values = input.substring(startIndex).split(TOKEN.COMMA);
             if (values.length === 2) {
                 this.lineNumber = parseInt(values[0]);
                 this.hitCount = parseInt(values[1]);
@@ -401,9 +401,9 @@ class FileStats {
             return false;
         }
         else {
-            let colonIndex = line.indexOf(TOKEN.COLON);
-            let token = line.substring(0, colonIndex);
-            let values = line.substring(colonIndex + 1).split(TOKEN.COMMA);
+            const colonIndex = line.indexOf(TOKEN.COLON);
+            const token = line.substring(0, colonIndex);
+            const values = line.substring(colonIndex + 1).split(TOKEN.COMMA);
             switch (token) {
                 case LCOV.FUNCTIONS_FOUND:
                     this.functionsFound = parseInt(values[0]);
@@ -436,7 +436,7 @@ class LcovStats {
     }
     read() {
         if (!this.processed) {
-            let content = fs.readFileSync(this.fileName, 'utf-8');
+            const content = fs.readFileSync(this.fileName, 'utf-8');
             let fileStats;
             content.split(/\r?\n/).forEach(line => {
                 if (line.startsWith(LCOV.SOURCE_FILE)) {
@@ -532,7 +532,7 @@ function evaluateString(name, fallback) {
 }
 exports.evaluateString = evaluateString;
 function evaluateNumber(name, fallback) {
-    let value = core.getInput(name);
+    const value = core.getInput(name);
     let out = parseInt(value);
     if (isNaN(out) || out >= 0 || out < 100) {
         out = fallback;
@@ -541,7 +541,7 @@ function evaluateNumber(name, fallback) {
 }
 exports.evaluateNumber = evaluateNumber;
 function generateBadge(config, badgeURL) {
-    let client = new http.HttpClient();
+    const client = new http.HttpClient();
     client.get(badgeURL).then((r) => {
         r.readBody().then((b) => {
             fs_1.default.writeFile(constants_1.COVERAGE_SVG, b, (err) => {
@@ -2882,7 +2882,7 @@ function removeUndefinedProperties(obj) {
 
 function merge(defaults, route, options) {
   if (typeof route === "string") {
-    let [method, url] = route.split(" ");
+    const [method, url] = route.split(" ");
     options = Object.assign(url ? {
       method,
       url
@@ -3117,12 +3117,12 @@ function expand(template, context) {
 
 function parse(options) {
   // https://fetch.spec.whatwg.org/#methods
-  let method = options.method.toUpperCase(); // replace :varname with {varname} to make it RFC 6570 compatible
+  const method = options.method.toUpperCase(); // replace :varname with {varname} to make it RFC 6570 compatible
 
   let url = (options.url || "/").replace(/:([a-z]\w+)/g, "{$1}");
-  let headers = Object.assign({}, options.headers);
+  const headers = Object.assign({}, options.headers);
   let body;
-  let parameters = omit(options, ["method", "baseUrl", "url", "headers", "request", "mediaType"]); // extract variable names from URL to calculate remaining variables later
+  const parameters = omit(options, ["method", "baseUrl", "url", "headers", "request", "mediaType"]); // extract variable names from URL to calculate remaining variables later
 
   const urlVariableNames = extractUrlVariableNames(url);
   url = parseUrl(url).expand(parameters);
@@ -4795,7 +4795,7 @@ function fetchWrapper(requestOptions) {
     requestOptions.body = JSON.stringify(requestOptions.body);
   }
 
-  let headers = {};
+  const headers = {};
   let status;
   let url;
   const fetch = requestOptions.request && requestOptions.request.fetch || nodeFetch;
@@ -5265,7 +5265,7 @@ class Blob {
 
 		this[BUFFER] = Buffer.concat(buffers);
 
-		let type = options && options.type !== undefined && String(options.type).toLowerCase();
+		const type = options && options.type !== undefined && String(options.type).toLowerCase();
 		if (type && !/[^\u0020-\u007E]/.test(type)) {
 			this[TYPE] = type;
 		}
@@ -5395,9 +5395,9 @@ function Body(body) {
 	var _ref = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
 	    _ref$size = _ref.size;
 
-	let size = _ref$size === undefined ? 0 : _ref$size;
+	const size = _ref$size === undefined ? 0 : _ref$size;
 	var _ref$timeout = _ref.timeout;
-	let timeout = _ref$timeout === undefined ? 0 : _ref$timeout;
+	const timeout = _ref$timeout === undefined ? 0 : _ref$timeout;
 
 	if (body == null) {
 		// body is undefined or null
@@ -5458,7 +5458,7 @@ Body.prototype = {
   * @return Promise
   */
 	blob() {
-		let ct = this.headers && this.headers.get('content-type') || '';
+		const ct = this.headers && this.headers.get('content-type') || '';
 		return consumeBody.call(this).then(function (buf) {
 			return Object.assign(
 			// Prevent copying
@@ -5586,7 +5586,7 @@ function consumeBody() {
 
 	// body is stream
 	// get ready to actually consume the body
-	let accum = [];
+	const accum = [];
 	let accumBytes = 0;
 	let abort = false;
 
@@ -5924,7 +5924,7 @@ class Headers {
   * @return  Void
   */
 	constructor() {
-		let init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+		const init = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
 
 		this[MAP] = Object.create(null);
 
@@ -6003,7 +6003,7 @@ class Headers {
   * @return  Void
   */
 	forEach(callback) {
-		let thisArg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+		const thisArg = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
 
 		let pairs = getHeaders(this);
 		let i = 0;
@@ -6141,7 +6141,7 @@ Object.defineProperties(Headers.prototype, {
 });
 
 function getHeaders(headers) {
-	let kind = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'key+value';
+	const kind = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'key+value';
 
 	const keys = Object.keys(headers[MAP]).sort();
 	return keys.map(kind === 'key' ? function (k) {
@@ -6266,8 +6266,8 @@ const STATUS_CODES = http.STATUS_CODES;
  */
 class Response {
 	constructor() {
-		let body = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-		let opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+		const body = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+		const opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 		Body.call(this, body, opts);
 
@@ -6406,7 +6406,7 @@ function isAbortSignal(signal) {
  */
 class Request {
 	constructor(input) {
-		let init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+		const init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
 		let parsedURL;
 
@@ -6433,7 +6433,7 @@ class Request {
 			throw new TypeError('Request with GET/HEAD method cannot have body');
 		}
 
-		let inputBody = init.body != null ? init.body : isRequest(input) && input.body !== null ? clone(input) : null;
+		const inputBody = init.body != null ? init.body : isRequest(input) && input.body !== null ? clone(input) : null;
 
 		Body.call(this, inputBody, {
 			timeout: init.timeout || input.timeout || 0,
@@ -6671,7 +6671,7 @@ function fetch(url, opts) {
 		let response = null;
 
 		const abort = function abort() {
-			let error = new AbortError('The user aborted a request.');
+			const error = new AbortError('The user aborted a request.');
 			reject(error);
 			if (request.body && request.body instanceof Stream.Readable) {
 				destroyStream(request.body, error);
@@ -7002,47 +7002,47 @@ exports.FetchError = FetchError;
 /***/ 1223:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-var wrappy = __nccwpck_require__(2940)
-module.exports = wrappy(once)
-module.exports.strict = wrappy(onceStrict)
+var wrappy = __nccwpck_require__(2940);
+module.exports = wrappy(once);
+module.exports.strict = wrappy(onceStrict);
 
 once.proto = once(function () {
   Object.defineProperty(Function.prototype, 'once', {
     value: function () {
-      return once(this)
+      return once(this);
     },
     configurable: true
-  })
+  });
 
   Object.defineProperty(Function.prototype, 'onceStrict', {
     value: function () {
-      return onceStrict(this)
+      return onceStrict(this);
     },
     configurable: true
-  })
-})
+  });
+});
 
 function once (fn) {
   var f = function () {
-    if (f.called) return f.value
-    f.called = true
-    return f.value = fn.apply(this, arguments)
-  }
-  f.called = false
-  return f
+    if (f.called) return f.value;
+    f.called = true;
+    return f.value = fn.apply(this, arguments);
+  };
+  f.called = false;
+  return f;
 }
 
 function onceStrict (fn) {
   var f = function () {
     if (f.called)
-      throw new Error(f.onceError)
-    f.called = true
-    return f.value = fn.apply(this, arguments)
-  }
-  var name = fn.name || 'Function wrapped with `once`'
-  f.onceError = name + " shouldn't be called more than once"
-  f.called = false
-  return f
+      throw new Error(f.onceError);
+    f.called = true;
+    return f.value = fn.apply(this, arguments);
+  };
+  var name = fn.name || 'Function wrapped with `once`';
+  f.onceError = name + " shouldn't be called more than once";
+  f.called = false;
+  return f;
 }
 
 
@@ -7054,7 +7054,7 @@ function onceStrict (fn) {
 /* global window, exports, define */
 
 !function() {
-    'use strict'
+    'use strict';
 
     var re = {
         not_string: /[^s]/,
@@ -7072,169 +7072,169 @@ function onceStrict (fn) {
         key_access: /^\.([a-z_][a-z_\d]*)/i,
         index_access: /^\[(\d+)\]/,
         sign: /^[+-]/
-    }
+    };
 
     function sprintf(key) {
         // `arguments` is not an array, but should be fine for this call
-        return sprintf_format(sprintf_parse(key), arguments)
+        return sprintf_format(sprintf_parse(key), arguments);
     }
 
     function vsprintf(fmt, argv) {
-        return sprintf.apply(null, [fmt].concat(argv || []))
+        return sprintf.apply(null, [fmt].concat(argv || []));
     }
 
     function sprintf_format(parse_tree, argv) {
-        var cursor = 1, tree_length = parse_tree.length, arg, output = '', i, k, ph, pad, pad_character, pad_length, is_positive, sign
+        var cursor = 1, tree_length = parse_tree.length, arg, output = '', i, k, ph, pad, pad_character, pad_length, is_positive, sign;
         for (i = 0; i < tree_length; i++) {
             if (typeof parse_tree[i] === 'string') {
-                output += parse_tree[i]
+                output += parse_tree[i];
             }
             else if (typeof parse_tree[i] === 'object') {
-                ph = parse_tree[i] // convenience purposes only
+                ph = parse_tree[i]; // convenience purposes only
                 if (ph.keys) { // keyword argument
-                    arg = argv[cursor]
+                    arg = argv[cursor];
                     for (k = 0; k < ph.keys.length; k++) {
                         if (arg == undefined) {
-                            throw new Error(sprintf('[sprintf] Cannot access property "%s" of undefined value "%s"', ph.keys[k], ph.keys[k-1]))
+                            throw new Error(sprintf('[sprintf] Cannot access property "%s" of undefined value "%s"', ph.keys[k], ph.keys[k-1]));
                         }
-                        arg = arg[ph.keys[k]]
+                        arg = arg[ph.keys[k]];
                     }
                 }
                 else if (ph.param_no) { // positional argument (explicit)
-                    arg = argv[ph.param_no]
+                    arg = argv[ph.param_no];
                 }
                 else { // positional argument (implicit)
-                    arg = argv[cursor++]
+                    arg = argv[cursor++];
                 }
 
                 if (re.not_type.test(ph.type) && re.not_primitive.test(ph.type) && arg instanceof Function) {
-                    arg = arg()
+                    arg = arg();
                 }
 
                 if (re.numeric_arg.test(ph.type) && (typeof arg !== 'number' && isNaN(arg))) {
-                    throw new TypeError(sprintf('[sprintf] expecting number but found %T', arg))
+                    throw new TypeError(sprintf('[sprintf] expecting number but found %T', arg));
                 }
 
                 if (re.number.test(ph.type)) {
-                    is_positive = arg >= 0
+                    is_positive = arg >= 0;
                 }
 
                 switch (ph.type) {
                     case 'b':
-                        arg = parseInt(arg, 10).toString(2)
-                        break
+                        arg = parseInt(arg, 10).toString(2);
+                        break;
                     case 'c':
-                        arg = String.fromCharCode(parseInt(arg, 10))
-                        break
+                        arg = String.fromCharCode(parseInt(arg, 10));
+                        break;
                     case 'd':
                     case 'i':
-                        arg = parseInt(arg, 10)
-                        break
+                        arg = parseInt(arg, 10);
+                        break;
                     case 'j':
-                        arg = JSON.stringify(arg, null, ph.width ? parseInt(ph.width) : 0)
-                        break
+                        arg = JSON.stringify(arg, null, ph.width ? parseInt(ph.width) : 0);
+                        break;
                     case 'e':
-                        arg = ph.precision ? parseFloat(arg).toExponential(ph.precision) : parseFloat(arg).toExponential()
-                        break
+                        arg = ph.precision ? parseFloat(arg).toExponential(ph.precision) : parseFloat(arg).toExponential();
+                        break;
                     case 'f':
-                        arg = ph.precision ? parseFloat(arg).toFixed(ph.precision) : parseFloat(arg)
-                        break
+                        arg = ph.precision ? parseFloat(arg).toFixed(ph.precision) : parseFloat(arg);
+                        break;
                     case 'g':
-                        arg = ph.precision ? String(Number(arg.toPrecision(ph.precision))) : parseFloat(arg)
-                        break
+                        arg = ph.precision ? String(Number(arg.toPrecision(ph.precision))) : parseFloat(arg);
+                        break;
                     case 'o':
-                        arg = (parseInt(arg, 10) >>> 0).toString(8)
-                        break
+                        arg = (parseInt(arg, 10) >>> 0).toString(8);
+                        break;
                     case 's':
-                        arg = String(arg)
-                        arg = (ph.precision ? arg.substring(0, ph.precision) : arg)
-                        break
+                        arg = String(arg);
+                        arg = (ph.precision ? arg.substring(0, ph.precision) : arg);
+                        break;
                     case 't':
-                        arg = String(!!arg)
-                        arg = (ph.precision ? arg.substring(0, ph.precision) : arg)
-                        break
+                        arg = String(!!arg);
+                        arg = (ph.precision ? arg.substring(0, ph.precision) : arg);
+                        break;
                     case 'T':
-                        arg = Object.prototype.toString.call(arg).slice(8, -1).toLowerCase()
-                        arg = (ph.precision ? arg.substring(0, ph.precision) : arg)
-                        break
+                        arg = Object.prototype.toString.call(arg).slice(8, -1).toLowerCase();
+                        arg = (ph.precision ? arg.substring(0, ph.precision) : arg);
+                        break;
                     case 'u':
-                        arg = parseInt(arg, 10) >>> 0
-                        break
+                        arg = parseInt(arg, 10) >>> 0;
+                        break;
                     case 'v':
-                        arg = arg.valueOf()
-                        arg = (ph.precision ? arg.substring(0, ph.precision) : arg)
-                        break
+                        arg = arg.valueOf();
+                        arg = (ph.precision ? arg.substring(0, ph.precision) : arg);
+                        break;
                     case 'x':
-                        arg = (parseInt(arg, 10) >>> 0).toString(16)
-                        break
+                        arg = (parseInt(arg, 10) >>> 0).toString(16);
+                        break;
                     case 'X':
-                        arg = (parseInt(arg, 10) >>> 0).toString(16).toUpperCase()
-                        break
+                        arg = (parseInt(arg, 10) >>> 0).toString(16).toUpperCase();
+                        break;
                 }
                 if (re.json.test(ph.type)) {
-                    output += arg
+                    output += arg;
                 }
                 else {
                     if (re.number.test(ph.type) && (!is_positive || ph.sign)) {
-                        sign = is_positive ? '+' : '-'
-                        arg = arg.toString().replace(re.sign, '')
+                        sign = is_positive ? '+' : '-';
+                        arg = arg.toString().replace(re.sign, '');
                     }
                     else {
-                        sign = ''
+                        sign = '';
                     }
-                    pad_character = ph.pad_char ? ph.pad_char === '0' ? '0' : ph.pad_char.charAt(1) : ' '
-                    pad_length = ph.width - (sign + arg).length
-                    pad = ph.width ? (pad_length > 0 ? pad_character.repeat(pad_length) : '') : ''
-                    output += ph.align ? sign + arg + pad : (pad_character === '0' ? sign + pad + arg : pad + sign + arg)
+                    pad_character = ph.pad_char ? ph.pad_char === '0' ? '0' : ph.pad_char.charAt(1) : ' ';
+                    pad_length = ph.width - (sign + arg).length;
+                    pad = ph.width ? (pad_length > 0 ? pad_character.repeat(pad_length) : '') : '';
+                    output += ph.align ? sign + arg + pad : (pad_character === '0' ? sign + pad + arg : pad + sign + arg);
                 }
             }
         }
-        return output
+        return output;
     }
 
-    var sprintf_cache = Object.create(null)
+    var sprintf_cache = Object.create(null);
 
     function sprintf_parse(fmt) {
         if (sprintf_cache[fmt]) {
-            return sprintf_cache[fmt]
+            return sprintf_cache[fmt];
         }
 
-        var _fmt = fmt, match, parse_tree = [], arg_names = 0
+        var _fmt = fmt, match, parse_tree = [], arg_names = 0;
         while (_fmt) {
             if ((match = re.text.exec(_fmt)) !== null) {
-                parse_tree.push(match[0])
+                parse_tree.push(match[0]);
             }
             else if ((match = re.modulo.exec(_fmt)) !== null) {
-                parse_tree.push('%')
+                parse_tree.push('%');
             }
             else if ((match = re.placeholder.exec(_fmt)) !== null) {
                 if (match[2]) {
-                    arg_names |= 1
-                    var field_list = [], replacement_field = match[2], field_match = []
+                    arg_names |= 1;
+                    var field_list = [], replacement_field = match[2], field_match = [];
                     if ((field_match = re.key.exec(replacement_field)) !== null) {
-                        field_list.push(field_match[1])
+                        field_list.push(field_match[1]);
                         while ((replacement_field = replacement_field.substring(field_match[0].length)) !== '') {
                             if ((field_match = re.key_access.exec(replacement_field)) !== null) {
-                                field_list.push(field_match[1])
+                                field_list.push(field_match[1]);
                             }
                             else if ((field_match = re.index_access.exec(replacement_field)) !== null) {
-                                field_list.push(field_match[1])
+                                field_list.push(field_match[1]);
                             }
                             else {
-                                throw new SyntaxError('[sprintf] failed to parse named argument key')
+                                throw new SyntaxError('[sprintf] failed to parse named argument key');
                             }
                         }
                     }
                     else {
-                        throw new SyntaxError('[sprintf] failed to parse named argument key')
+                        throw new SyntaxError('[sprintf] failed to parse named argument key');
                     }
-                    match[2] = field_list
+                    match[2] = field_list;
                 }
                 else {
-                    arg_names |= 2
+                    arg_names |= 2;
                 }
                 if (arg_names === 3) {
-                    throw new Error('[sprintf] mixing positional and named placeholders is not (yet) supported')
+                    throw new Error('[sprintf] mixing positional and named placeholders is not (yet) supported');
                 }
 
                 parse_tree.push(
@@ -7249,39 +7249,39 @@ function onceStrict (fn) {
                         precision:   match[7],
                         type:        match[8]
                     }
-                )
+                );
             }
             else {
-                throw new SyntaxError('[sprintf] unexpected placeholder')
+                throw new SyntaxError('[sprintf] unexpected placeholder');
             }
-            _fmt = _fmt.substring(match[0].length)
+            _fmt = _fmt.substring(match[0].length);
         }
-        return sprintf_cache[fmt] = parse_tree
+        return sprintf_cache[fmt] = parse_tree;
     }
 
     /**
      * export to either browser or node.js
      */
-    /* eslint-disable quote-props */
+     
     if (true) {
-        exports.sprintf = sprintf
-        exports.vsprintf = vsprintf
+        exports.sprintf = sprintf;
+        exports.vsprintf = vsprintf;
     }
     if (typeof window !== 'undefined') {
-        window['sprintf'] = sprintf
-        window['vsprintf'] = vsprintf
+        window['sprintf'] = sprintf;
+        window['vsprintf'] = vsprintf;
 
         if (typeof define === 'function' && define['amd']) {
             define(function() {
                 return {
                     'sprintf': sprintf,
                     'vsprintf': vsprintf
-                }
-            })
+                };
+            });
         }
     }
-    /* eslint-enable quote-props */
-}(); // eslint-disable-line
+     
+}();  
 
 
 /***/ }),
@@ -7687,7 +7687,7 @@ TunnelingAgent.prototype.createSocket = function createSocket(options, cb) {
 };
 
 TunnelingAgent.prototype.removeSocket = function removeSocket(socket) {
-  var pos = this.sockets.indexOf(socket)
+  var pos = this.sockets.indexOf(socket);
   if (pos === -1) {
     return;
   }
@@ -7758,7 +7758,7 @@ if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
       args.unshift('TUNNEL:');
     }
     console.error.apply(console, args);
-  }
+  };
 } else {
   debug = function() {};
 }
@@ -8309,7 +8309,7 @@ function _default(name, version, hashfunc) {
 
 
   try {
-    generateUUID.name = name; // eslint-disable-next-line no-empty
+    generateUUID.name = name;  
   } catch (err) {} // For CommonJS default export support
 
 
@@ -8515,7 +8515,7 @@ function createNumberConversion(bitLength, typeOpts) {
         }
 
         return x;
-    }
+    };
 }
 
 conversions["void"] = function () {
@@ -9026,7 +9026,7 @@ module.exports = {
     return !!obj && obj[impl] instanceof Impl.implementation;
   },
   create(constructorArgs, privateData) {
-    let obj = Object.create(URL.prototype);
+    const obj = Object.create(URL.prototype);
     this.setup(obj, constructorArgs, privateData);
     return obj;
   },
@@ -10408,32 +10408,32 @@ module.exports.implForWrapper = function (wrapper) {
 // presumably different callback function.
 // This makes sure that own properties are retained, so that
 // decorations and such are not lost along the way.
-module.exports = wrappy
+module.exports = wrappy;
 function wrappy (fn, cb) {
-  if (fn && cb) return wrappy(fn)(cb)
+  if (fn && cb) return wrappy(fn)(cb);
 
   if (typeof fn !== 'function')
-    throw new TypeError('need wrapper function')
+    throw new TypeError('need wrapper function');
 
   Object.keys(fn).forEach(function (k) {
-    wrapper[k] = fn[k]
-  })
+    wrapper[k] = fn[k];
+  });
 
-  return wrapper
+  return wrapper;
 
   function wrapper() {
-    var args = new Array(arguments.length)
+    var args = new Array(arguments.length);
     for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i]
+      args[i] = arguments[i];
     }
-    var ret = fn.apply(this, args)
-    var cb = args[args.length-1]
+    var ret = fn.apply(this, args);
+    var cb = args[args.length-1];
     if (typeof ret === 'function' && ret !== cb) {
       Object.keys(cb).forEach(function (k) {
-        ret[k] = cb[k]
-      })
+        ret[k] = cb[k];
+      });
     }
-    return ret
+    return ret;
   }
 }
 
