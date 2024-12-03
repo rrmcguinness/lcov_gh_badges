@@ -42,7 +42,7 @@ on:
 ```yaml
 ...
 steps:
-  - uses: rrmcguinness/lcov_gh_badges@v1.1.1
+  - uses: rrmcguinness/lcov_gh_badges@v1.1.2
     file: ./target/coverage.dat
 ```
 
@@ -61,7 +61,7 @@ Example:
 ```yaml
 ...
 steps:
-- uses: rrmcguinness/lcov_gh_badges@v1.1.1
+- uses: rrmcguinness/lcov_gh_badges@v1.1.2
   file: ./target/coverage.dat
   access_token: ${{ secret.COVERAGE_TOKEN }}
   style: flat
